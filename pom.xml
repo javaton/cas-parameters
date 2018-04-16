@@ -40,6 +40,13 @@
             <systemPath>${basedir}/.idea/libraries/common-1.0-SNAPSHOT.jar</systemPath>
         </dependency>
 
+
+        <dependency>
+            <groupId>org.modelmapper</groupId>
+            <artifactId>modelmapper</artifactId>
+            <version>1.1.0</version>
+        </dependency>
+
     </dependencies>
 
     <properties>
