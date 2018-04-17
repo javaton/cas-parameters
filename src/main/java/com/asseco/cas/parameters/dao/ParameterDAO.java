@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ParameterDAO extends AisDao implements ParameterInterface<Parameter> {
+public class ParameterDAO extends AisDao implements ParameterInterface {
 
     /**
      * Function that save Parameter

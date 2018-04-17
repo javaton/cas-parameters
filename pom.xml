@@ -6,6 +6,7 @@
     <groupId>com.asseco.cas</groupId>
     <artifactId>cas-parameters</artifactId>
     <version>0.1.0</version>
+    <packaging>war</packaging>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -14,10 +15,18 @@
     </parent>
 
     <dependencies>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -33,18 +42,17 @@
 
 
         <dependency>
-            <groupId>com.asseco.cass.ais</groupId>
-            <artifactId>common-1.0-SNAPSHOT</artifactId>
+            <groupId>com.asseco.cas</groupId>
+            <artifactId>ais</artifactId>
             <version>1.0</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/.idea/libraries/common-1.0-SNAPSHOT.jar</systemPath>
+            
         </dependency>
 
-
         <dependency>
-            <groupId>org.modelmapper</groupId>
-            <artifactId>modelmapper</artifactId>
-            <version>1.1.0</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <version>2.0.0.RELEASE</version>
+            <scope>test</scope>
         </dependency>
 
     </dependencies>
@@ -55,15 +63,41 @@
 
 
     <build>
+
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
+                    <mainClass>com.asseco.cas.Application</mainClass>
                     <includeSystemScope>true</includeSystemScope>
-                </configuration>
-            </plugin>
+                </configuration>            
+            </plugin>         
+                                         
+            <plugin>          
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>             
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                    <archive> 
+                        <manifest>          
+                            <addDefaultImplementationEntries>false</addDefaultImplementationEntries>
+                        </manifest>         
+                    </archive>
+                </configuration>            
+            </plugin>         
+                                         
+            
+
         </plugins>
     </build>
+
+
+    <repositories>
+      <repository>
+        <id>my-repo</id>
+        <url>file://${basedir}/my-repo</url>
+      </repository>
+    </repositories>
 
 </project>

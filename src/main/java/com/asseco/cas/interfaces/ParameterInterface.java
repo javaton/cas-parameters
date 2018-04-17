@@ -6,7 +6,7 @@ import com.asseco.cas.parameters.exceptions.checked.ParameterListNotFoundExcepti
 import java.util.ArrayList;
 import java.util.List;
 
-public interface ParameterInterface<T> {
+public interface ParameterInterface {
 
     void save(Parameter parameter);
 
@@ -23,6 +23,6 @@ public interface ParameterInterface<T> {
     Parameter getParameterFromListByName(String listName, String parameterKey);
 
     //SAMO ZA TESTIRANJE
-    ArrayList<T> readList();
+    ArrayList<Parameter> readList();
 
 }

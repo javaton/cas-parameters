@@ -11,11 +11,15 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 
+import javax.servlet.FilterRegistration;
+
+@ComponentScan
 @SpringBootApplication
 public class Application extends SpringBootServletInitializer {
 
@@ -29,6 +33,19 @@ public class Application extends SpringBootServletInitializer {
 
         SpringApplication.run(Application.class, args);
     }
+
+
+    @Bean
+    public FilterRegistrationBean corsFilterRegistration(){
+        FilterRegistrationBean registrationBean = new FilterRegistrationBean(new CORSFilter());
+
+        registrationBean.setName("CORS Filter");
+        registrationBean.addUrlPatterns("/*");
+        registrationBean.setOrder(1);
+        return registrationBean;
+    }
+
+
 
     /*@Bean
     public CommandLineRunner commandLineRunner(ApplicationContext ctx) {

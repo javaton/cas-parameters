@@ -1,6 +1,5 @@
 package com.asseco.cas;
 
-import com.asseco.cas.DTO.ParameterRepresentation;
 import com.asseco.cas.interfaces.ParameterInterface;
 import com.asseco.cas.parameters.domain.Parameter;
 import com.asseco.cas.parameters.domain.ParameterList;
@@ -10,11 +9,14 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
-public class ParameterService implements ParameterInterface<ParameterRepresentation> {
+public class ParameterService implements ParameterInterface {
 
-    ArrayList<Parameter> list = new ArrayList<>();;
-    HashSet<Parameter> set = new HashSet<Parameter>();
-    //Potrebno samo za testiranje
+    private ArrayList<Parameter> list = new ArrayList<>();;
+    private HashSet<Parameter> set = new HashSet<Parameter>();
+
+
+
+    //Test Lista
     ParameterList parameterList = new ParameterList() {
         @Override
         public String getName() {
@@ -112,9 +114,8 @@ public class ParameterService implements ParameterInterface<ParameterRepresentat
     }
 
     private void populateList(){
-        //list = new ArrayList<>();
         parameterList.setId(1L);
-        parameterList.setName("Placeholder ParamList Name");
+        parameterList.setName("ListName");
 
         Parameter para;
         for (int i = 0; i<=50; i++){
@@ -135,49 +136,19 @@ public class ParameterService implements ParameterInterface<ParameterRepresentat
     }
 
 
-    public ArrayList<ParameterRepresentation> readList (){
-        ArrayList<ParameterRepresentation> rep = new ArrayList<>();
-        for (Parameter p : list){
-            rep.add(new ParameterRepresentation(p.getId(), p.getKey(),p.getValue(),p.getDescription()));
-        }
-
-        return rep;
+    public ArrayList<Parameter> readList (){
+        return list;
     }
-
-    /*public boolean addParameter(Parameter parameter){
-
-        if (list.add(parameter))
-            return true;
-
-        return false;
-    }*/
-
-
-    /*public boolean checkKey(String key){
-        for (Parameter p : list){
-            if ((p.getKey()).equals(key))
-                return true;
-        }
-        return false;
-    }
-
-    public Parameter getByKey(String key){
-        for (Parameter p : list){
-            if ((p.getKey()).equals(key))
-                return p;
-        }
-        return null;
-    }*/
-
 
     @Override
     public void save(Parameter parameter) {
+        Parameter p = parameter;
+        p.setId((long)list.size());
         list.add(parameter);
     }
 
     @Override
     public Parameter update(Parameter parameter) {
-
         for (Parameter p : list){
             if ((p.getKey()).equals(parameter.getKey())){
                 p.setDescription(parameter.getDescription());
@@ -190,20 +161,24 @@ public class ParameterService implements ParameterInterface<ParameterRepresentat
 
     @Override
     public void delete(Long idParameterList, Parameter parameter) throws ParameterListNotFoundException {
-        for(Iterator<Parameter> it = list.iterator(); it.hasNext();){
-            Parameter p1 = it.next();
-            if((p1.getId()).equals(parameter.getId())){
-                it.remove();
+
+        if (parameterList.getId().equals(idParameterList)) {
+            for (Iterator<Parameter> it = list.iterator(); it.hasNext(); ) {
+                Parameter p = it.next();
+                if ((p.getId()).equals(parameter.getId())) {
+                    it.remove();
+                }
             }
         }
     }
 
     @Override
     public Parameter findById(Long idParameter) {
+
         for(Iterator<Parameter> it = list.iterator(); it.hasNext();){
-            Parameter p1 = it.next();
-            if((p1.getId()).equals(idParameter)){
-                return p1;
+            Parameter p = it.next();
+            if((p.getId()).equals(idParameter)){
+                return p;
             }
         }
         return null;
@@ -211,6 +186,9 @@ public class ParameterService implements ParameterInterface<ParameterRepresentat
 
     @Override
     public List<Parameter> findAllParameterFromList(String paramListName) {
+
+        Parameter parameter;
+
         ArrayList<Parameter> tmp = new ArrayList<>();
         for(Iterator<Parameter> it = list.iterator(); it.hasNext();){
             Parameter p1 = it.next();
@@ -228,12 +206,13 @@ public class ParameterService implements ParameterInterface<ParameterRepresentat
 
     @Override
     public List<Parameter> findAllParameterFromList(Long idParameterList) {
+
         ArrayList<Parameter> tmp = new ArrayList<>();
         for(Iterator<Parameter> it = list.iterator(); it.hasNext();){
-            Parameter p1 = it.next();
-            Long tmpId = p1.getParameterList().getId();
+            Parameter p = it.next();
+            Long tmpId = p.getParameterList().getId();
             if(tmpId.equals(idParameterList)){
-                tmp.add(p1);
+                tmp.add(p);
             }
         }
         if (!(tmp.isEmpty()))
@@ -244,12 +223,12 @@ public class ParameterService implements ParameterInterface<ParameterRepresentat
 
     @Override
     public Parameter getParameterFromListByName(String listName, String parameterKey) {
+
         if(parameterList.getName().equals(listName)){
             for(Iterator<Parameter> it = list.iterator(); it.hasNext();){
-                Parameter p1 = it.next();
-
-                if(parameterKey.equals(p1.getKey())){
-                    return p1;
+                Parameter p = it.next();
+                if(parameterKey.equals(p.getKey())){
+                    return p;
                 }
             }
         }
