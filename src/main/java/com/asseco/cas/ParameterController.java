@@ -68,18 +68,16 @@ public class ParameterController {
     }
 
     @RequestMapping(value = "/parameter/{list}", method = RequestMethod.DELETE)
-    public void delete(@PathVariable(value = "list")Long idParameterList, @RequestBody Parameter parameter, HttpServletResponse response){
-        boolean check = true;
-
-        if (check) {
-            try {
-                response.setStatus(204);
-                paraService.delete(idParameterList, parameter);
-            } catch (ParameterListNotFoundException e) {
-                response.setStatus(400);
-                System.out.println("ParameterListNotFoundException");
-            }
-        } else {response.setStatus(400);}
+    public String delete(@PathVariable(value = "list")Long idParameterList, @RequestBody Parameter parameter, HttpServletResponse response){
+        try {
+            response.setStatus(204);
+            paraService.delete(idParameterList, parameter);
+            return ("Successfully deleted Parameter with ID: " + String.valueOf(parameter.getId()));
+        } catch (ParameterListNotFoundException e) {
+            response.setStatus(400);
+            System.out.println(e.getStackTrace());
+            return e.getMessage();
+        }
 
     }
 

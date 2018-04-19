@@ -114,7 +114,7 @@ public class ParameterService implements ParameterInterface {
     }
 
     private void populateList(){
-        parameterList.setId(1L);
+        parameterList.setId((long)1);
         parameterList.setName("ListName");
 
         Parameter para;
@@ -150,7 +150,7 @@ public class ParameterService implements ParameterInterface {
     @Override
     public Parameter update(Parameter parameter) {
         for (Parameter p : list){
-            if ((p.getKey()).equals(parameter.getKey())){
+            if ((p.getId()).equals(parameter.getId())){
                 p.setDescription(parameter.getDescription());
                 p.setValue(parameter.getValue());
                 return p;
@@ -163,13 +163,17 @@ public class ParameterService implements ParameterInterface {
     public void delete(Long idParameterList, Parameter parameter) throws ParameterListNotFoundException {
 
         if (parameterList.getId().equals(idParameterList)) {
+            boolean check = false;
             for (Iterator<Parameter> it = list.iterator(); it.hasNext(); ) {
                 Parameter p = it.next();
                 if ((p.getId()).equals(parameter.getId())) {
                     it.remove();
+                    check = true;
                 }
             }
-        }
+            if (check == false)
+                throw new ParameterListNotFoundException("No such parameter to delete");
+        } else throw new ParameterListNotFoundException("No \"" + String.valueOf(idParameterList) + "\" list available");
     }
 
     @Override
