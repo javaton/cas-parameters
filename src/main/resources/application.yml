@@ -1,0 +1,13 @@
+spring:
+  profiles:
+    active: database
+
+---
+
+  spring:
+  profiles: local
+
+---
+
+  spring:
+  profiles: database

@@ -4,11 +4,13 @@ import com.asseco.cas.interfaces.ParameterInterface;
 import com.asseco.cas.parameters.domain.Parameter;
 import com.asseco.cas.parameters.domain.ParameterList;
 import com.asseco.cas.parameters.exceptions.checked.ParameterListNotFoundException;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
 @Service
+@Profile("local")
 public class ParameterService implements ParameterInterface {
 
     private ArrayList<Parameter> list = new ArrayList<>();;

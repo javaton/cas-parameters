@@ -6,12 +6,16 @@ import com.asseco.cas.parameters.domain.Parameter;
 import com.asseco.cas.parameters.domain.ParameterList;
 import com.asseco.cas.parameters.exceptions.checked.ParameterListNotFoundException;
 import com.asseco.cass.ais.dao.AisDao;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Service
+@Profile("database")
 public class ParameterDAO extends AisDao implements ParameterInterface {
 
     /**
