@@ -10,6 +10,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -21,6 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @RunWith(SpringRunner.class)
+@ActiveProfiles("local")
 @WebMvcTest(ParameterController.class)
 public class ParameterControllerTest {
 
@@ -28,6 +30,8 @@ public class ParameterControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+
+    //Ovaj Autowire radi samo za local, treba odraditi isto za DAO
     @Autowired
     private ParameterService parameterService;
 
