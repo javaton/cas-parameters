@@ -35,7 +35,7 @@ public class ParameterController {
 
 
     @RequestMapping(value = "/parameter", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public String addParameter(@RequestBody Parameter parameter, HttpServletResponse response){
+    public Parameter addParameter(@RequestBody Parameter parameter, HttpServletResponse response){
         boolean check1 = parameter.getKey() == null ? false : true;
         boolean check2 = parameter.getValue() == null ? false : true;
         boolean check3 = parameter.getDescription() == null ? false : true;
@@ -44,14 +44,14 @@ public class ParameterController {
             try {
                 paraService.save(parameter);
                 response.setStatus(201);
-                return "Success";
+                return findById(parameter.getId(), response);
             } catch (Exception e){
                 response.setStatus(400);
-                return "Failed";
+                return null;
             }
         }
         response.setStatus(400);
-        return "Failed";
+        return null;
     }
 
 
@@ -60,7 +60,7 @@ public class ParameterController {
         Parameter p = paraService.update(parameter);
         if (!(p==null)) {
             response.setStatus(200);
-            return p;
+            return findById(parameter.getId(), response);
         }
         response.setStatus(400);
         return null;
@@ -85,7 +85,8 @@ public class ParameterController {
     public Parameter findById(@PathVariable(value = "id")Long id, HttpServletResponse response){
         Parameter p = paraService.findById(id);
         if (!(p==null)) {
-            response.setStatus(200);
+            if(response==null)
+                response.setStatus(200);
             return p;
         }
         response.setStatus(400);
