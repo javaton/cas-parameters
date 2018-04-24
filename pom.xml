@@ -24,7 +24,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-tomcat</artifactId>
-            <scope>provided</scope>
+            <!--<scope>provided</scope>-->   <!--Potrebno za WebLogic-->
         </dependency>
 
         <dependency>
@@ -42,10 +42,10 @@
 
 
         <dependency>
-            <groupId>com.asseco.cas</groupId>
-            <artifactId>ais</artifactId>
-            <version>1.0</version>
-            
+            <groupId>com.asseco.cass</groupId>
+            <artifactId>common</artifactId>
+            <version>0.1</version>
+
         </dependency>
 
         <dependency>
