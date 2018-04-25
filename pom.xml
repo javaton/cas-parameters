@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.asseco.cas</groupId>
-    <artifactId>cas-parameters</artifactId>
+    <artifactId>cas-parameterItems</artifactId>
     <version>0.1.0</version>
     <packaging>jar</packaging>
 
@@ -44,8 +44,7 @@
         <dependency>
             <groupId>com.asseco.cass</groupId>
             <artifactId>common</artifactId>
-            <version>0.1</version>
-
+            <version>0.2</version>
         </dependency>
 
         <dependency>
@@ -56,13 +55,23 @@
         </dependency>
 
 
-
         <dependency>
             <groupId>com.jayway.jsonpath</groupId>
             <artifactId>json-path</artifactId>
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.eclipse.persistence</groupId>
+            <artifactId>eclipselink</artifactId>
+            <version>2.5.0</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.oracle/ojdbc14 -->
+        <dependency>
+            <groupId>com.oracle</groupId>
+            <artifactId>ojdbc6</artifactId>
+            <version>11.2.0.3</version>
+        </dependency>
 
 
     </dependencies>

@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @ActiveProfiles("local")
 @WebMvcTest(ParameterController.class)
-public class ParameterControllerTest {
+public class ParameterItemControllerTest {
 
 
     @Autowired
@@ -88,7 +88,7 @@ public class ParameterControllerTest {
         String listName = "ListName";
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get(
-                "/parameters/" + listName).accept(
+                "/parameterItems/" + listName).accept(
                 MediaType.APPLICATION_JSON);
         MvcResult result = mockMvc.perform(requestBuilder).andExpect(status().isOk()).andReturn();
 
@@ -101,7 +101,7 @@ public class ParameterControllerTest {
         String listNumber = "1";
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get(
-                "/parameters/" + listNumber).accept(
+                "/parameterItems/" + listNumber).accept(
                 MediaType.APPLICATION_JSON);
         MvcResult result = mockMvc.perform(requestBuilder).andExpect(status().isOk()).andReturn();
     }

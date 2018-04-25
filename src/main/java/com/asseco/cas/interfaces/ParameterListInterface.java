@@ -1,7 +1,7 @@
 package com.asseco.cas.interfaces;
 
 import com.asseco.cas.parameters.domain.ApplicationParameterList;
-import com.asseco.cas.parameters.domain.Parameter;
+import com.asseco.cas.parameters.domain.ParameterItem;
 import com.asseco.cas.parameters.domain.ParameterList;
 import com.asseco.cas.parameters.domain.SystemParameterList;
 
@@ -27,5 +27,5 @@ public interface ParameterListInterface {
     List<SystemParameterList> findAllSystemLists();
 
     //SAMO ZA TESTIRANJE
-    ArrayList<Parameter> readList ();
+    ArrayList<ParameterItem> readList ();
 }

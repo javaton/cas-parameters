@@ -1,2 +1,2 @@
-# cas-parameters
+# cas-parameterItems
 Cas externalized parametrization 

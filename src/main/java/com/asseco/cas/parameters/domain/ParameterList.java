@@ -9,7 +9,7 @@ import java.util.Set;
 
 
 @Entity
-@Table(name="CC1PARAMETER_LIST",uniqueConstraints = {@UniqueConstraint(columnNames = {"UUID"})})
+@Table(name="PARAMETER_LIST",uniqueConstraints = {@UniqueConstraint(columnNames = {"UUID"})})
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 public abstract class ParameterList extends BaseEntity {
 
@@ -20,7 +20,7 @@ public abstract class ParameterList extends BaseEntity {
     @Column(name="PARAMETER_NAME",unique=true, length=300)
     private String name;
     @OneToMany(cascade={CascadeType.ALL},fetch=FetchType.EAGER, mappedBy="parameterList")
-    protected Set<Parameter> parameters = new HashSet<Parameter>();
+    protected Set<ParameterItem> parameterItems = new HashSet<ParameterItem>();
     @Column(name="STATE_CODE", length=10)
     @Enumerated(EnumType.STRING)
     private ParameterListEnum stateCode;
@@ -40,12 +40,12 @@ public abstract class ParameterList extends BaseEntity {
 
     //Kada ovo treba da se prebaci u JSON dolazi do beskonacne rekurzije, i izbacuje Error
     @JsonIgnore
-    public Set<Parameter> getParameters() {
-        return parameters;
+    public Set<ParameterItem> getParameterItems() {
+        return parameterItems;
     }
 
-    public void setParameters(Set<Parameter> parameters) {
-        this.parameters = parameters;
+    public void setParameterItems(Set<ParameterItem> parameterItems) {
+        this.parameterItems = parameterItems;
     }
 
 
@@ -58,30 +58,30 @@ public abstract class ParameterList extends BaseEntity {
         this.stateCode = stateCode;
     }
 
-    public boolean addParameter(Parameter parameter) {
-        if (parameter == null) {
-            throw new IllegalArgumentException("Parameter is null!");
+    public boolean addParameter(ParameterItem parameterItem) {
+        if (parameterItem == null) {
+            throw new IllegalArgumentException("ParameterItem is null!");
         }
-        if (parameter.getId() != null) {
-            throw new UnsupportedOperationException("Identification of parameter is not null!");
+        if (parameterItem.getId() != null) {
+            throw new UnsupportedOperationException("Identification of parameterItem is not null!");
         }
-        if (parameter.getParameterList() != null) {
-            throw new UnsupportedOperationException("Parameter is already added to a parameter list!");
+        if (parameterItem.getParameterList() != null) {
+            throw new UnsupportedOperationException("ParameterItem is already added to a parameterItem list!");
         }
-        if (this.parameters.add(parameter)){
-            parameter.setParameterList(this);
+        if (this.parameterItems.add(parameterItem)){
+            parameterItem.setParameterList(this);
             return true;
         } else {
             return false;
         }
     }
 
-    public boolean removeParameter(Parameter parameter) {
-        if (parameter == null) {
-            throw new IllegalArgumentException("Parameter is null!");
+    public boolean removeParameter(ParameterItem parameterItem) {
+        if (parameterItem == null) {
+            throw new IllegalArgumentException("ParameterItem is null!");
         }
-        if (this.parameters.remove(parameter)){
-            parameter.setParameterList(null);
+        if (this.parameterItems.remove(parameterItem)){
+            parameterItem.setParameterList(null);
             return true;
         } else {
             return false;

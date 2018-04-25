@@ -1,28 +1,24 @@
 package com.asseco.cas.interfaces;
 
-import com.asseco.cas.parameters.domain.Parameter;
-import com.asseco.cas.parameters.exceptions.checked.ParameterListNotFoundException;
+import com.asseco.cas.parameters.domain.ParameterItem;
+import com.asseco.cass.application.ApplicationException;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public interface ParameterInterface {
 
-    void save(Parameter parameter);
+    void save(ParameterItem parameterItem);
 
-    Parameter update(Parameter parameter);
+    ParameterItem update(ParameterItem parameterItem);
 
-    void delete(Long idParameterList, Parameter parameter) throws ParameterListNotFoundException;
+    void delete(Long idParameterList, ParameterItem parameterItem) throws ApplicationException;
 
-    Parameter findById(Long idParameter);
+    ParameterItem findById(Long idParameter);
 
-    List<Parameter> findAllParameterFromList(String paramListName);
+    List<ParameterItem> findAllParameterFromList(String paramListName);
 
-    List<Parameter> findAllParameterFromList(Long idParameterList);
+    List<ParameterItem> findAllParameterFromList(Long idParameterList);
 
-    Parameter getParameterFromListByName(String listName, String parameterKey);
-
-    //SAMO ZA TESTIRANJE
-    ArrayList<Parameter> readList();
+    ParameterItem getParameterFromListByName(String listName, String parameterKey);
 
 }
