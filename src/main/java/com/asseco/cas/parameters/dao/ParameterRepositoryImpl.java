@@ -5,6 +5,7 @@ import com.asseco.cas.interfaces.ParameterInterface;
 import com.asseco.cas.parameters.domain.ParameterItem;
 import com.asseco.cass.application.ApplicationException;
 import com.asseco.cass.persist.EntityRepositoryImpl;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@Profile("database")
 public class ParameterRepositoryImpl<P extends ParameterItem> extends EntityRepositoryImpl<P> implements ParameterInterface {
 
     private EntityManager getRepository(){

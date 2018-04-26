@@ -1,4 +1,4 @@
-package com.asseco.cas;
+package com.asseco.cas.controllers;
 
 
 import com.asseco.cas.interfaces.ParameterInterface;
@@ -24,12 +24,12 @@ public class ParameterController {
     private ParameterInterface parameterInterface;
 
     @Autowired
-    public ParameterController(ParameterRepositoryImpl parameterRepositoryImpl){
+    public ParameterController(ParameterInterface parameterRepositoryImpl){
         this.parameterInterface = parameterRepositoryImpl;
     }
 
     //Test metoda OVO CE BITI IZBRISANO
-    @RequestMapping(value = "/parameterItems", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/parameter-items", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public List<ParameterItem> readAll() {
         System.out.println("udje u read all");
         if(parameterInterface == null) {
@@ -39,7 +39,7 @@ public class ParameterController {
     }
 
 
-    @RequestMapping(value = "/parameterItem", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/parameter-item", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ParameterItem addParameter(@RequestBody ParameterItem parameterItem, HttpServletResponse response){
         //TO DO proveriti sta radi ovo!
         boolean check1 = parameterItem.getKey() == null ? false : true;
@@ -61,7 +61,7 @@ public class ParameterController {
     }
 
 
-    @RequestMapping (value = "/parameterItem", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping (value = "/parameter-item", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ParameterItem updateParameter (@RequestBody ParameterItem parameterItem, HttpServletResponse response){
         ParameterItem p = parameterInterface.update(parameterItem);
         if (!(p==null)) {
@@ -73,7 +73,7 @@ public class ParameterController {
 
     }
 
-    @RequestMapping(value = "/parameterItem/{list}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/parameter-item/{list}", method = RequestMethod.DELETE)
     public String delete(@PathVariable(value = "list")Long idParameterList, @RequestBody ParameterItem parameterItem, HttpServletResponse response){
         try {
             response.setStatus(204);
@@ -87,7 +87,7 @@ public class ParameterController {
 
     }
 
-    @RequestMapping(value = "/parameter/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/parameter-item/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ParameterItem findById(@PathVariable(value = "id")Long id, HttpServletResponse response){
         ParameterItem p = parameterInterface.findById(id);
         if (!(p==null)) {
@@ -99,7 +99,7 @@ public class ParameterController {
         return null;
     }
 
-    @RequestMapping (value = "/parameterItems/{name:[\\D]+}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping (value = "/parameter-items/{name:[\\D]+}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ArrayList<ParameterItem> allFromList(@PathVariable(value = "name")String name, HttpServletResponse response){
         try {
             ArrayList<ParameterItem> p = (ArrayList<ParameterItem>) parameterInterface.findAllParameterFromList(name);
@@ -116,9 +116,9 @@ public class ParameterController {
 
     }
 
-    @RequestMapping (value = "/parameterItems/{id:[\\d]+}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ArrayList<ParameterItem> allFromList(@PathVariable(value = "id")Long id, HttpServletResponse response){
-        ArrayList<ParameterItem> p = (ArrayList<ParameterItem>) parameterInterface.findAllParameterFromList(id);
+    @RequestMapping (value = "/parameter-items/{id:[\\d]+}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<ParameterItem> allFromList(@PathVariable(value = "id")Long id, HttpServletResponse response){
+        List<ParameterItem> p = parameterInterface.findAllParameterFromList(id);
 
         if (!(p.isEmpty())){
             response.setStatus(200);
@@ -131,7 +131,7 @@ public class ParameterController {
     }
 
 
-    @RequestMapping (value = "/parameter/{list}/{key}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping (value = "/parameter-item/{list}/{key}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ParameterItem getByName(@PathVariable(value = "list")String listName, @PathVariable(value = "key")String parameterKey, HttpServletResponse response){
         ParameterItem p = parameterInterface.getParameterFromListByName(listName, parameterKey);
         if (p!=null) {

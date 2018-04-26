@@ -67,10 +67,17 @@
             <version>2.5.0</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.oracle/ojdbc14 -->
+
         <dependency>
             <groupId>com.oracle</groupId>
             <artifactId>ojdbc6</artifactId>
             <version>11.2.0.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.12</version>
         </dependency>
 
 

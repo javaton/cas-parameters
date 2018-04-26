@@ -1,6 +1,8 @@
 
 package com.asseco.cas;
 
+import com.asseco.cas.controllers.ParameterController;
+import com.asseco.cas.local.ParameterService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.skyscreamer.jsonassert.JSONAssert;

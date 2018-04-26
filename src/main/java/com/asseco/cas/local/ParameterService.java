@@ -1,4 +1,4 @@
-package com.asseco.cas;
+package com.asseco.cas.local;
 
 import com.asseco.cas.interfaces.ParameterInterface;
 import com.asseco.cas.parameters.domain.ParameterItem;
@@ -14,7 +14,7 @@ import java.util.*;
 @Profile("local")
 public class ParameterService implements ParameterInterface {
 
-    private ArrayList<ParameterItem> list = new ArrayList<>();;
+    private List<ParameterItem> list = new ArrayList<>();
     private HashSet<ParameterItem> set = new HashSet<ParameterItem>();
 
     ParameterList parameterList = new SystemParameterList();
@@ -44,7 +44,7 @@ public class ParameterService implements ParameterInterface {
     }
 
 
-    public ArrayList<ParameterItem> readList (){
+    public List<ParameterItem> readList (){
         return list;
     }
 
@@ -121,7 +121,7 @@ public class ParameterService implements ParameterInterface {
     @Override
     public List<ParameterItem> findAllParameterFromList(Long idParameterList) {
 
-        ArrayList<ParameterItem> tmp = new ArrayList<>();
+        List<ParameterItem> tmp = new ArrayList<>();
         for(Iterator<ParameterItem> it = list.iterator(); it.hasNext();){
             ParameterItem p = it.next();
             Long tmpId = p.getParameterList().getId();

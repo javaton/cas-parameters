@@ -1,7 +1,9 @@
 package com.asseco.cas.parameters.domain;
 
 import com.asseco.cass.ais.domain.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -39,7 +41,7 @@ public abstract class ParameterList extends BaseEntity {
 
 
     //Kada ovo treba da se prebaci u JSON dolazi do beskonacne rekurzije, i izbacuje Error
-    @JsonIgnore
+    //@JsonIgnore
     public Set<ParameterItem> getParameterItems() {
         return parameterItems;
     }
@@ -47,7 +49,6 @@ public abstract class ParameterList extends BaseEntity {
     public void setParameterItems(Set<ParameterItem> parameterItems) {
         this.parameterItems = parameterItems;
     }
-
 
 
     public ParameterListEnum getStateCode() {
@@ -87,6 +88,5 @@ public abstract class ParameterList extends BaseEntity {
             return false;
         }
     }
-
 
 }
