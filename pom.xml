@@ -40,6 +40,7 @@
             <version>2.2.0</version>
         </dependency>
 
+
         <dependency>
             <groupId>com.asseco.cass</groupId>
             <artifactId>common</artifactId>
@@ -65,26 +66,18 @@
             <artifactId>eclipselink</artifactId>
             <version>2.5.1</version>
         </dependency>
-
-        <!--<dependency>-->
-            <!--<groupId>org.eclipse.persistence</groupId>-->
-            <!--<artifactId>org.eclipse.persistence.jpa</artifactId>-->
-            <!--<version>2.7.0</version>-->
-        <!--</dependency>-->
-
         <!-- https://mvnrepository.com/artifact/com.oracle/ojdbc14 -->
-        <!--<dependency>-->
-            <!--<groupId>com.oracle</groupId>-->
-            <!--<artifactId>ojdbc6</artifactId>-->
-            <!--<version>11.2.0.3</version>-->
-        <!--</dependency>-->
         <dependency>
             <groupId>com.oracle</groupId>
             <artifactId>ojdbc6</artifactId>
             <version>11.2.0.3</version>
-            <!--<scope>test</scope>-->
         </dependency>
 
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.12</version>
+        </dependency>
 
 
     </dependencies>

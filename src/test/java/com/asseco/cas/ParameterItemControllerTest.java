@@ -33,7 +33,7 @@ public class ParameterItemControllerTest {
 //    @Test
     public void findByIdTest() throws Exception {
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get(
-                "/parameter/5").accept(
+                "/parameter-item/5").accept(
                 MediaType.APPLICATION_JSON);
         MvcResult result = mockMvc.perform(requestBuilder).andExpect(status().isOk()).andReturn();
         String expected = "{\"id\":5}";
@@ -44,7 +44,7 @@ public class ParameterItemControllerTest {
 
 //    @Test
     public void saveParameterTest() throws Exception{
-        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/parameter")
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/parameter-item")
                 .accept(MediaType.APPLICATION_JSON).content("{\"key\" : \"5\", \"value\" : \"value\", \"description\" : \"descriptionValue\"}")
                 .contentType(MediaType.APPLICATION_JSON);
         MvcResult result = mockMvc.perform(requestBuilder).andReturn();
@@ -56,7 +56,7 @@ public class ParameterItemControllerTest {
 //
 //    @Test
     public void updateParameterTest() throws Exception{
-        RequestBuilder requestBuilder = MockMvcRequestBuilders.put("/parameter")
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.put("/parameter-item")
                 .accept(MediaType.APPLICATION_JSON).content("{\"id\" : \"5\", \"key\" : \"5\", \"value\" : \"value\", \"description\" : \"descriptionValue\"}")
                 .contentType(MediaType.APPLICATION_JSON);
         MvcResult result = mockMvc.perform(requestBuilder).andReturn();
@@ -67,7 +67,7 @@ public class ParameterItemControllerTest {
 
 //    @Test
     public void deleteParameterTest() throws Exception {
-        RequestBuilder requestBuilder = MockMvcRequestBuilders.delete("/parameter/1")
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.delete("/parameter-item/1")
                 .accept(MediaType.APPLICATION_JSON).content("{\"id\" : \"48\"}")
                 .contentType(MediaType.APPLICATION_JSON);
         MvcResult result = mockMvc.perform(requestBuilder).andReturn();
@@ -82,7 +82,7 @@ public class ParameterItemControllerTest {
         String listName = "ListName";
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get(
-                "/parameterItems/" + listName).accept(
+                "/parameter-items/" + listName).accept(
                 MediaType.APPLICATION_JSON);
         MvcResult result = mockMvc.perform(requestBuilder).andExpect(status().isOk()).andReturn();
 
@@ -95,7 +95,7 @@ public class ParameterItemControllerTest {
         String listNumber = "1";
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get(
-                "/parameterItems/" + listNumber).accept(
+                "/parameter-items/" + listNumber).accept(
                 MediaType.APPLICATION_JSON);
         MvcResult result = mockMvc.perform(requestBuilder).andExpect(status().isOk()).andReturn();
     }
@@ -104,14 +104,14 @@ public class ParameterItemControllerTest {
 //    @Test
     public void getByNameTest() throws Exception {
         String listName = "ListName";
-        String key = "5";
-        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/parameter/" + listName + "/" + key)
+        String key = "NYSE";
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/parameter-item/" + listName + "/" + key)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON);
         MvcResult result = mockMvc.perform(requestBuilder).andReturn();
         MockHttpServletResponse response = result.getResponse();
         assertEquals(HttpStatus.OK.value(), response.getStatus());
-        String expected = "{\"key\":\"5\"}";
+        String expected = "{\"key\":\"NYSE\"}";
         JSONAssert.assertEquals(expected, result.getResponse().getContentAsString(), JSONCompareMode.LENIENT);
     }
 

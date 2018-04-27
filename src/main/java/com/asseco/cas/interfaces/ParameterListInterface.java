@@ -28,4 +28,16 @@ public interface ParameterListInterface extends EntityRepository<ParameterList> 
 
     List<SystemParameterList> findAllSystemLists();
 
+
+    List<ParameterList> readList ();
+
+    //Bane dodatak
+    public ParameterItem getParameterItem(Long idList, Long idItem);
+
+    public ParameterItem saveParameterToList(Long idList, ParameterItem parameterItem);
+
+    public ParameterItem updateParameterInList (Long idList, ParameterItem parameterItem);
+
+    public void deleteFromList(Long idList, ParameterItem parameterItem);
+
 }

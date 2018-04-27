@@ -16,20 +16,18 @@
 		<properties>
 			<!-- Configuring JDBC properties -->
 			<property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@db-orcl:1521:orcl" />
-			<property name="javax.persistence.jdbc.user" value="sofijamolsp" />
-			<property name="javax.persistence.jdbc.password" value="sofija" />
+			<property name="javax.persistence.jdbc.user" value="ivanpuhr" />
+			<property name="javax.persistence.jdbc.password" value="ivan" />
 			<property name="javax.persistence.jdbc.driver" value="oracle.jdbc.driver.OracleDriver" />
 
-			<property name="eclipselink.logging.level.sql" value="FINEST"/>
-	 		<property name="eclipselink.ddl-generation" value="create-or-extend-tables" />
 			<property name="eclipselink.weaving.fetchgroups" value="static"/>
 			<property name="eclipselink.weaving" value="static" />
 			<property name="eclipselink.query-results-cache" value="false" />
 			<property name="eclipselink.cache.shared.default" value="true" />
 			<property name="eclipselink.cache.size.default" value="0" />
 			<property name="eclipselink.cache.type.default" value="None" />
-			<!--<property name="eclipselink.ddl-generation" value="drop-and-create-tables" />-->
-			<property name="eclipselink.ddl-generation.output-mode" value="database"/>
+			<property name="eclipselink.ddl-generation" value="create-or-extend-tables" />
+
 
 		</properties>
 	</persistence-unit>

@@ -18,7 +18,7 @@ import java.util.Map;
 
 //@Repository
 @Service
-public class ParameterItemItemepositoryImpl<P extends ParameterItem> extends EntityRepositoryImpl<P> implements ParameterItemInterface {
+public class ParameterRepositoryImpl<P extends ParameterItem> extends EntityRepositoryImpl<P> implements ParameterInterface {
 
     private EntityManager getRepository(){
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("parametersPU");

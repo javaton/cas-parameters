@@ -1,6 +1,7 @@
 package com.asseco.cas.parameters.domain;
 
 import com.asseco.cass.ais.domain.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 
@@ -47,6 +48,7 @@ public class ParameterItem extends BaseEntity {
         this.description = description;
     }
 
+    @JsonIgnore
     public ParameterList getParameterList() {
         return parameterList;
     }
