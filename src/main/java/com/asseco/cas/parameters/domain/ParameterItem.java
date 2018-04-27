@@ -5,7 +5,7 @@ import com.asseco.cass.ais.domain.BaseEntity;
 import javax.persistence.*;
 
 @Entity
-@Table(name="PARAMETER",uniqueConstraints = {@UniqueConstraint(columnNames = {"ID_PARAMETER_LIST", "PARAMETER_KEY"})})
+@Table(name="PARAMETER_ITEM",uniqueConstraints = {@UniqueConstraint(columnNames = {"ID_PARAMETER_LIST", "PARAMETER_KEY"})})
 public class ParameterItem extends BaseEntity {
 
     private static final long serialVersionUID = -1150328291610116275L;

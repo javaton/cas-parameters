@@ -1,10 +1,10 @@
 package com.asseco.cas.parameters.dao;
 
-
-import com.asseco.cas.interfaces.ParameterInterface;
+import com.asseco.cas.interfaces.ParameterItemInterface;
 import com.asseco.cas.parameters.domain.ParameterItem;
 import com.asseco.cass.application.ApplicationException;
 import com.asseco.cass.persist.EntityRepositoryImpl;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
@@ -16,8 +16,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+//@Repository
 @Service
-public class ParameterRepositoryImpl<P extends ParameterItem> extends EntityRepositoryImpl<P> implements ParameterInterface {
+public class ParameterItemItemepositoryImpl<P extends ParameterItem> extends EntityRepositoryImpl<P> implements ParameterItemInterface {
 
     private EntityManager getRepository(){
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("parametersPU");
@@ -82,8 +83,8 @@ public class ParameterRepositoryImpl<P extends ParameterItem> extends EntityRepo
         String query = "select p from ParameterItem p "
                 + "where p.parameterList.id =" + "'" + idParameterList + "'";
         System.out.println(query);
-        return null;
-       // return getRepository().executeQuery(query);
+        Query q = getRepository().createQuery(query);
+        return q.getResultList();
     }
 
     public ParameterItem getParameterFromListByName(String listName, String parameterKey){

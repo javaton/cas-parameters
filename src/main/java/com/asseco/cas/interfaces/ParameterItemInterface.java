@@ -5,7 +5,7 @@ import com.asseco.cass.application.ApplicationException;
 
 import java.util.List;
 
-public interface ParameterInterface {
+public interface ParameterItemInterface {
 
     void save(ParameterItem parameterItem);
 

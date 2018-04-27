@@ -4,17 +4,19 @@ import com.asseco.cas.parameters.domain.ApplicationParameterList;
 import com.asseco.cas.parameters.domain.ParameterItem;
 import com.asseco.cas.parameters.domain.ParameterList;
 import com.asseco.cas.parameters.domain.SystemParameterList;
+import com.asseco.cass.persist.EntityRepository;
+import com.asseco.cass.persist.EntityRepositoryImpl;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public interface ParameterListInterface {
+public interface ParameterListInterface extends EntityRepository<ParameterList> {
 
-    ParameterList save(ParameterList parameter);
-
-    ParameterList update(ParameterList parameter);
-
-    void delete(ParameterList parameterList);
+//    ParameterList save(ParameterList parameter);
+//
+//    ParameterList update(ParameterList parameter);
+//
+//    void delete(ParameterList parameterList);
 
     List<ParameterList> findAll();
 
@@ -26,6 +28,4 @@ public interface ParameterListInterface {
 
     List<SystemParameterList> findAllSystemLists();
 
-    //SAMO ZA TESTIRANJE
-    ArrayList<ParameterItem> readList ();
 }

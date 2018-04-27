@@ -1,6 +1,6 @@
 package com.asseco.cas;
 
-import com.asseco.cas.interfaces.ParameterInterface;
+import com.asseco.cas.interfaces.ParameterItemInterface;
 import com.asseco.cas.parameters.domain.ParameterItem;
 import com.asseco.cas.parameters.domain.ParameterList;
 import com.asseco.cas.parameters.domain.SystemParameterList;
@@ -12,14 +12,14 @@ import java.util.*;
 
 @Service
 @Profile("local")
-public class ParameterService implements ParameterInterface {
+public class ParameterItemService implements ParameterItemInterface {
 
     private ArrayList<ParameterItem> list = new ArrayList<>();;
     private HashSet<ParameterItem> set = new HashSet<ParameterItem>();
 
     ParameterList parameterList = new SystemParameterList();
 
-    public ParameterService(){
+    public ParameterItemService(){
         populateList();
     }
 
@@ -38,7 +38,7 @@ public class ParameterService implements ParameterInterface {
                 //parameterList.addParameter(para);
                 list.add(para);
                 set.add(para);
-            parameterList.setParameterItems(set);
+           // parameterList.setParameterItems(set);
             para.setParameterList(parameterList);
         }
     }
