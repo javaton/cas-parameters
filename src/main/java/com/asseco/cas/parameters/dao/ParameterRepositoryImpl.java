@@ -107,7 +107,7 @@ public class ParameterRepositoryImpl<P extends ParameterItem> extends EntityRepo
     }
 
 
-    //SAMO ZA TESTIRANJE
+
     public ArrayList<ParameterItem> readList (){
         return null;
     }

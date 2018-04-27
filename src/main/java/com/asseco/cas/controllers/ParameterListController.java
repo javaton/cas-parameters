@@ -50,7 +50,7 @@ public class ParameterListController {
 
 
     @RequestMapping(value = "/parameter/{idList}/{idItem}", method = RequestMethod.GET,  produces = MediaType.APPLICATION_JSON_VALUE)
-    public ParameterItem getParameterList(@PathVariable(value = "idList")Long idList, @PathVariable(value = "idItem")Long idItem, HttpServletResponse response){
+    public ParameterItem getParameterItemFromList(@PathVariable(value = "idList")Long idList, @PathVariable(value = "idItem")Long idItem, HttpServletResponse response){
         ParameterItem parameterItem = parameterListInterface.getParameterItem(idList, idItem);
         if (!(parameterItem==null)){
             response.setStatus(200);
@@ -90,7 +90,7 @@ public class ParameterListController {
     }
 
     @RequestMapping(value = "/parameter-lists/{idList}", method = RequestMethod.PUT,  consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ParameterItem editList(@PathVariable(value = "idList") Long idList, @RequestBody ParameterItem parameterItem, HttpServletResponse response){
+    public ParameterItem editParameterInList(@PathVariable(value = "idList") Long idList, @RequestBody ParameterItem parameterItem, HttpServletResponse response){
         ParameterItem pItem = parameterListInterface.updateParameterInList(idList, parameterItem);
         if (!(pItem==null)){
             response.setStatus(200);
@@ -99,7 +99,7 @@ public class ParameterListController {
     }
 
 
-    //Ovako je definisano bilo u DAO
+    //void je definisan u DAO
     @RequestMapping(value = "/parameter-lists", method = RequestMethod.DELETE,  consumes = MediaType.APPLICATION_JSON_VALUE)
     public void deleteList(@RequestBody SystemParameterList parameterList, HttpServletResponse response){
         parameterListInterface.delete(parameterList);

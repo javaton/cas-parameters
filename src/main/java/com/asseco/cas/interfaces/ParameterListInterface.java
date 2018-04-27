@@ -26,7 +26,7 @@ public interface ParameterListInterface {
 
     List<SystemParameterList> findAllSystemLists();
 
-    //SAMO ZA TESTIRANJE
+
     List<ParameterList> readList ();
 
     //Bane dodatak

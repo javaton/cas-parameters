@@ -63,9 +63,18 @@ public class ParameterListService implements ParameterListInterface {
     @Override
     public ParameterList save(ParameterList parameterList) {
 
-        if(parameterValuesList.add(parameterList))
-            return parameterList;
+        boolean check = true;
+        for(ParameterList p : parameterValuesList){
+            if (p.getId().equals(parameterList.getId()))
+                check = false;
+        }
 
+        if(check) {
+            try {
+                parameterValuesList.add(parameterList);
+                return parameterList;
+            } catch (Exception e){return null;}
+        }
         return null;
     }
 
@@ -74,7 +83,9 @@ public class ParameterListService implements ParameterListInterface {
 
         for(ParameterList pList : parameterValuesList){
             if (pList.getId().equals(idList)){
-                pList.addParameter(parameterItem);
+                try {
+                    pList.addParameter(parameterItem);
+                } catch (Exception e){return null;}
                 return parameterItem;
             }
         }
@@ -103,12 +114,15 @@ public class ParameterListService implements ParameterListInterface {
         for(ParameterList pList : parameterValuesList){
             if(pList.getId().equals(idList)){
                 Set<ParameterItem> tmp = pList.getParameterItems();
+
                 for(ParameterItem pItem : tmp){
                     if(pItem.getId().equals(parameterItem.getId())){
-                        pItem.setKey(parameterItem.getKey());
-                        pItem.setDescription(parameterItem.getDescription());
-                        pItem.setValue(parameterItem.getValue());
-                        return pItem;
+                        try {
+                            pItem.setKey(parameterItem.getKey());
+                            pItem.setDescription(parameterItem.getDescription());
+                            pItem.setValue(parameterItem.getValue());
+                            return pItem;
+                        } catch(Exception e){return null;}
                     }
                 }
             }
@@ -147,12 +161,16 @@ public class ParameterListService implements ParameterListInterface {
 
     @Override
     public ParameterList findById(Long idParameterList) {
-        if (parameterValuesList != null)
-            return parameterValuesList.stream()
-                    .filter(e -> e.getId().equals(idParameterList))
-                    .findFirst()
-                    .get();
-
+        if (parameterValuesList != null) {
+            try {
+                return parameterValuesList.stream()
+                        .filter(e -> e.getId().equals(idParameterList))
+                        .findAny()
+                        .get();
+            } catch (NoSuchElementException e) {
+                return null;
+            }
+        }
         return null;
     }
 

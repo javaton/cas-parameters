@@ -5,9 +5,12 @@ import com.asseco.cas.parameters.domain.ParameterItem;
 import com.asseco.cas.parameters.domain.ParameterList;
 import com.asseco.cas.parameters.domain.SystemParameterList;
 import com.asseco.cass.application.ApplicationException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 
 @Service
@@ -15,9 +18,8 @@ import java.util.*;
 public class ParameterService implements ParameterInterface {
 
     private List<ParameterItem> list = new ArrayList<>();
-    private HashSet<ParameterItem> set = new HashSet<ParameterItem>();
 
-    ParameterList parameterList = new SystemParameterList();
+    private ParameterList parameterList = new SystemParameterList();
 
     public ParameterService(){
         populateList();
@@ -26,20 +28,25 @@ public class ParameterService implements ParameterInterface {
     private void populateList(){
         parameterList.setId((long)1);
         parameterList.setName("ListName");
+        parameterList.setStateCode(ParameterList.ParameterListEnum.INITIAL);
+        parameterList.setVersion((long)123456);
 
-        ParameterItem para;
-        for (int i = 0; i<=50; i++){
-                para = new ParameterItem();
-                para.setId(Long.valueOf(i));
-                para.setKey(String.valueOf(i/* * (int)(Math.random()*100)*/));
-                para.setValue("Para Value: " + String.valueOf(i * (int)(Math.random()*150)));
-                para.setDescription("Para " + String.valueOf(i * (int)(Math.random()*150)) + " Description");
-                //addParameter() ne radi jer trazi da id bude null, a ne postavlja mu posle sam vrednost
-                //parameterList.addParameter(para);
-                list.add(para);
-                set.add(para);
-            parameterList.setParameterItems(set);
-            para.setParameterList(parameterList);
+        ParameterItem items[];
+
+        InputStream is = getClass().getClassLoader().getResourceAsStream("MOCK_DATA.json");
+        if (is != null) {
+            ObjectMapper objectMapper = new ObjectMapper();
+
+            try {
+                items = objectMapper.readValue(is, ParameterItem[].class);
+                //list = Arrays.asList(items);
+                list.addAll(Arrays.asList(items));
+                for(ParameterItem p : list){
+                    p.setParameterList(parameterList);
+                }
+            } catch (IOException e) {
+                System.out.print(e.getMessage());
+            }
         }
     }
 
@@ -51,8 +58,9 @@ public class ParameterService implements ParameterInterface {
     @Override
     public void save(ParameterItem parameterItem) {
         ParameterItem p = parameterItem;
-        p.setId((long)list.size());
-        list.add(parameterItem);
+        p.setId((long)list.size()+1);
+        p.setParameterList(parameterList);
+        list.add(p);
     }
 
     @Override
@@ -79,7 +87,7 @@ public class ParameterService implements ParameterInterface {
                     check = true;
                 }
             }
-            //TO DO proveriti sta se ovde desava
+            //TODO proveriti sta se ovde desava
 //            if (check == false)
 //                throw new ApplicationException("No such parameterItem to delete");
 //        } else throw new ApplicationException("No \"" + String.valueOf(idParameterList) + "\" list available");
@@ -103,7 +111,7 @@ public class ParameterService implements ParameterInterface {
 
         ParameterItem parameterItem;
 
-        ArrayList<ParameterItem> tmp = new ArrayList<>();
+        List<ParameterItem> tmp = new ArrayList<>();
         for(Iterator<ParameterItem> it = list.iterator(); it.hasNext();){
             ParameterItem p1 = it.next();
             String tmpName = p1.getParameterList().getName();

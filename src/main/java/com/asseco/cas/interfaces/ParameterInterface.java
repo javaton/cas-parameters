@@ -21,4 +21,5 @@ public interface ParameterInterface {
 
     ParameterItem getParameterFromListByName(String listName, String parameterKey);
 
+    public List<ParameterItem> readList();
 }

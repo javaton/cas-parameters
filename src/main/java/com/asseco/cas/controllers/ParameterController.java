@@ -24,24 +24,24 @@ public class ParameterController {
     private ParameterInterface parameterInterface;
 
     @Autowired
-    public ParameterController(ParameterInterface parameterRepositoryImpl){
-        this.parameterInterface = parameterRepositoryImpl;
+    public ParameterController(ParameterInterface parameterInterface){
+        this.parameterInterface = parameterInterface;
     }
 
-    //Test metoda OVO CE BITI IZBRISANO
+
     @RequestMapping(value = "/parameter-items", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public List<ParameterItem> readAll() {
         System.out.println("udje u read all");
         if(parameterInterface == null) {
             System.out.println("djole djole");
         } else {System.out.println("nece djole");}
-        return parameterInterface.findAllParameterFromList("");
+        return parameterInterface.readList();
     }
 
 
     @RequestMapping(value = "/parameter-item", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ParameterItem addParameter(@RequestBody ParameterItem parameterItem, HttpServletResponse response){
-        //TO DO proveriti sta radi ovo!
+        //TODO proveriti sta radi ovo!
         boolean check1 = parameterItem.getKey() == null ? false : true;
         boolean check2 = parameterItem.getValue() == null ? false : true;
         boolean check3 = parameterItem.getDescription() == null ? false : true;

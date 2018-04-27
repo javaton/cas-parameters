@@ -40,7 +40,6 @@ public abstract class ParameterList extends BaseEntity {
     }
 
 
-    //Kada ovo treba da se prebaci u JSON dolazi do beskonacne rekurzije, i izbacuje Error
     //@JsonIgnore
     public Set<ParameterItem> getParameterItems() {
         return parameterItems;
