@@ -1,13 +1,13 @@
 package com.asseco.cas.parameters.dao;
 
-import com.asseco.cas.interfaces.ParameterListInterface;
+import com.asseco.cas.interfaces.ParameterListExtended;
 import com.asseco.cas.parameters.domain.ApplicationParameterList;
+import com.asseco.cas.parameters.domain.ParameterItem;
 import com.asseco.cas.parameters.domain.ParameterList;
 import com.asseco.cas.parameters.domain.SystemParameterList;
-import com.asseco.cass.ais.domain.BaseEntity;
 import com.asseco.cass.persist.EntityRepositoryImpl;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +19,9 @@ import java.util.List;
 @Service
 @EnableAutoConfiguration
 @Repository
-public class ParameterListRepositoryImpl extends EntityRepositoryImpl<ParameterList> implements ParameterListInterface {
+@Profile("database")
+public class ParameterListRepositoryImpl extends EntityRepositoryImpl<ParameterList> implements ParameterListExtended {
+
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("parametersPU");
 
 
@@ -80,8 +82,36 @@ public class ParameterListRepositoryImpl extends EntityRepositoryImpl<ParameterL
     }
 
 
+
+
+
+    //Dodate da bi Spring hteo da kraira Bean od Interfejsa
     @Override
     protected Class<ParameterList> getEntityClass() {
         return ParameterList.class;
+    }
+
+    @Override
+    public ParameterItem saveParameterToList(Long idList, ParameterItem parameterItem) {
+        return null;
+    }
+
+    @Override
+    public ParameterList update(ParameterList parameter) {
+        return null;
+    }
+
+    @Override
+    public ParameterItem updateParameterInList(Long idList, ParameterItem parameterItem) {
+        return null;
+    }
+
+    @Override
+    public void deleteFromList(Long idList, ParameterItem parameterItem) {
+    }
+
+    @Override
+    public ParameterItem getParameterItem(Long idList, Long idItem) {
+        return null;
     }
 }

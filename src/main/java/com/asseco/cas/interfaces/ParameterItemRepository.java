@@ -1,17 +1,13 @@
 package com.asseco.cas.interfaces;
 
 import com.asseco.cas.parameters.domain.ParameterItem;
-import com.asseco.cass.application.ApplicationException;
+import com.asseco.cass.persist.EntityRepository;
 
 import java.util.List;
 
-public interface ParameterItemInterface {
-
-    void save(ParameterItem parameterItem);
+public interface ParameterItemRepository extends EntityRepository<ParameterItem> {
 
     ParameterItem update(ParameterItem parameterItem);
-
-    void delete(Long idParameterList, ParameterItem parameterItem) throws ApplicationException;
 
     ParameterItem findById(Long idParameter);
 
@@ -19,7 +15,9 @@ public interface ParameterItemInterface {
 
     List<ParameterItem> findAllParameterFromList(Long idParameterList);
 
+    void delete(Long idParameterList, ParameterItem parameterItem);
+
     ParameterItem getParameterFromListByName(String listName, String parameterKey);
 
-    public List<ParameterItem> readList();
+    List<ParameterItem> readList();
 }

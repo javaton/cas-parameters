@@ -10,14 +10,7 @@ import com.asseco.cass.persist.EntityRepositoryImpl;
 import java.util.ArrayList;
 import java.util.List;
 
-public interface ParameterListInterface extends EntityRepository<ParameterList> {
-
-//    ParameterList save(ParameterList parameter);
-//
-//    ParameterList update(ParameterList parameter);
-//
-//    void delete(ParameterList parameterList);
-
+public interface ParameterListRepository extends EntityRepository<ParameterList> {
     List<ParameterList> findAll();
 
     ParameterList findById(Long idParameterList);
@@ -27,17 +20,4 @@ public interface ParameterListInterface extends EntityRepository<ParameterList> 
     List<ApplicationParameterList> findAllApplicationLists();
 
     List<SystemParameterList> findAllSystemLists();
-
-
-    List<ParameterList> readList ();
-
-    //Bane dodatak
-    public ParameterItem getParameterItem(Long idList, Long idItem);
-
-    public ParameterItem saveParameterToList(Long idList, ParameterItem parameterItem);
-
-    public ParameterItem updateParameterInList (Long idList, ParameterItem parameterItem);
-
-    public void deleteFromList(Long idList, ParameterItem parameterItem);
-
 }

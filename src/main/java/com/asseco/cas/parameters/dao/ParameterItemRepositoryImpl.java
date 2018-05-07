@@ -1,10 +1,10 @@
 package com.asseco.cas.parameters.dao;
 
-import com.asseco.cas.interfaces.ParameterItemInterface;
+import com.asseco.cas.interfaces.ParameterItemRepository;
 import com.asseco.cas.parameters.domain.ParameterItem;
 import com.asseco.cass.application.ApplicationException;
 import com.asseco.cass.persist.EntityRepositoryImpl;
-import org.springframework.stereotype.Repository;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
@@ -18,7 +18,8 @@ import java.util.Map;
 
 //@Repository
 @Service
-public class ParameterRepositoryImpl<P extends ParameterItem> extends EntityRepositoryImpl<P> implements ParameterInterface {
+@Profile("database")
+public class ParameterItemRepositoryImpl<P extends ParameterItem> extends EntityRepositoryImpl<ParameterItem> implements ParameterItemRepository {
 
     private EntityManager getRepository(){
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("parametersPU");
@@ -29,9 +30,12 @@ public class ParameterRepositoryImpl<P extends ParameterItem> extends EntityRepo
      * Function that save ParameterItem
      * @param parameterItem
      */
-    public void save(ParameterItem parameterItem) {
+
+    /*public void save(ParameterItem parameterItem) {
         getRepository().persist(parameterItem);
-    }
+    }*/
+
+
     /**
      * Function that update ParameterItem
      * @param parameterItem
@@ -106,7 +110,7 @@ public class ParameterRepositoryImpl<P extends ParameterItem> extends EntityRepo
     }
 
 
-    //SAMO ZA TESTIRANJE
+
     public ArrayList<ParameterItem> readList (){
         return null;
     }

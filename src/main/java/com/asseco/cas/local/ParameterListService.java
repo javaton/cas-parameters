@@ -1,7 +1,7 @@
 package com.asseco.cas.local;
 
 
-import com.asseco.cas.interfaces.ParameterListInterface;
+import com.asseco.cas.interfaces.ParameterListExtended;
 import com.asseco.cas.parameters.domain.ApplicationParameterList;
 import com.asseco.cas.parameters.domain.ParameterItem;
 import com.asseco.cas.parameters.domain.ParameterList;
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Profile("local")
-public class ParameterListService implements ParameterListInterface {
+public class ParameterListService implements ParameterListExtended {
 
     ParameterList parameterList = new SystemParameterList();
     ParameterList parameterList2 = new SystemParameterList();
@@ -58,11 +58,48 @@ public class ParameterListService implements ParameterListInterface {
 
     }
 
+    @Override
+    public List<ParameterList> findAll() {
 
+        if(parameterValuesList!=null)
+            return parameterValuesList.stream()
+                    .collect(Collectors.toList());
+
+        return null;
+    }
 
     @Override
-    public ParameterList save(ParameterList parameterList) {
+    public ParameterList findById(Long idParameterList) {
+        if (parameterValuesList != null) {
+            try {
+                return parameterValuesList.stream()
+                        .filter(e -> e.getId().equals(idParameterList))
+                        .findAny()
+                        .get();
+            } catch (NoSuchElementException e) {
+                return null;
+            }
+        }
+        return null;
+    }
 
+    public ParameterItem getParameterItem(Long idList, Long idItem){
+
+        for(ParameterList pList : parameterValuesList){
+            if(pList.getId().equals(idList)){
+                Set<ParameterItem> tmp = pList.getParameterItems();
+                for (ParameterItem pItem : tmp){
+                    if(pItem.getId().equals(idItem))
+                        return pItem;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    public ParameterList store(ParameterList parameterList) {
         boolean check = true;
         for(ParameterList p : parameterValuesList){
             if (p.getId().equals(parameterList.getId()))
@@ -78,13 +115,15 @@ public class ParameterListService implements ParameterListInterface {
         return null;
     }
 
-    @Override
     public ParameterItem saveParameterToList(Long idList, ParameterItem parameterItem){
 
         for(ParameterList pList : parameterValuesList){
             if (pList.getId().equals(idList)){
                 try {
-                    pList.addParameter(parameterItem);
+                    parameterItem.setId((long)pList.getParameterItems().size()+1);
+                    Set<ParameterItem> set = pList.getParameterItems();
+                    set.add(parameterItem);
+                    pList.setParameterItems(set);
                 } catch (Exception e){return null;}
                 return parameterItem;
             }
@@ -93,7 +132,6 @@ public class ParameterListService implements ParameterListInterface {
         return null;
     }
 
-    @Override
     public ParameterList update(ParameterList parameter) {
 
         for (ParameterList pList : parameterValuesList){
@@ -131,7 +169,7 @@ public class ParameterListService implements ParameterListInterface {
     }
 
     @Override
-    public void delete(ParameterList parameterList) {
+    public void remove(ParameterList parameterList) {
         for (Iterator<ParameterList> it = parameterValuesList.iterator(); it.hasNext(); ) {
             ParameterList pList = it.next();
             if ((pList.getId()).equals(parameterList.getId())) {
@@ -140,7 +178,6 @@ public class ParameterListService implements ParameterListInterface {
         }
     }
 
-    @Override
     public void deleteFromList(Long idList, ParameterItem parameterItem){
         for (ParameterList pList : parameterValuesList){
             if (pList.getId().equals(idList)){
@@ -154,28 +191,16 @@ public class ParameterListService implements ParameterListInterface {
         }
     }
 
-    @Override
-    public List<ParameterList> findAll() {
-        return null;
-    }
 
-    @Override
-    public ParameterList findById(Long idParameterList) {
-        if (parameterValuesList != null) {
-            try {
-                return parameterValuesList.stream()
-                        .filter(e -> e.getId().equals(idParameterList))
-                        .findAny()
-                        .get();
-            } catch (NoSuchElementException e) {
-                return null;
-            }
-        }
-        return null;
-    }
+
 
     @Override
     public List<ParameterList> findByName(String parameterListName) {
+        return null;
+    }
+
+    @Override
+    public ParameterList findByUuid(String s) {
         return null;
     }
 
@@ -186,31 +211,6 @@ public class ParameterListService implements ParameterListInterface {
 
     @Override
     public List<SystemParameterList> findAllSystemLists() {
-        return null;
-    }
-
-    @Override
-    public List<ParameterList> readList() {
-        if(parameterValuesList!=null)
-            return parameterValuesList.stream()
-            .collect(Collectors.toList());
-
-        return null;
-    }
-
-    @Override
-    public ParameterItem getParameterItem(Long idList, Long idItem){
-
-        for(ParameterList pList : parameterValuesList){
-            if(pList.getId().equals(idList)){
-                Set<ParameterItem> tmp = pList.getParameterItems();
-                for (ParameterItem pItem : tmp){
-                    if(pItem.getId().equals(idItem))
-                        return pItem;
-                }
-            }
-        }
-
         return null;
     }
 

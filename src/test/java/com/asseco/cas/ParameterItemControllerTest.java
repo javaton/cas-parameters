@@ -1,6 +1,7 @@
 
 package com.asseco.cas;
 
+import com.asseco.cas.local.ParameterItemService;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.springframework.http.HttpStatus;
@@ -17,7 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 //@RunWith(SpringRunner.class)
 //@ActiveProfiles("local")
-//@WebMvcTest(ParameterController.class)
+//@WebMvcTest(ParameterItemController.class)
 public class ParameterItemControllerTest {
 
 //

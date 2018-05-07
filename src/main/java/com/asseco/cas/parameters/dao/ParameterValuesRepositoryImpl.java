@@ -1,6 +1,7 @@
+/*
 package com.asseco.cas.parameters.dao;
 
-import com.asseco.cas.interfaces.ParameterListInterface;
+import com.asseco.cas.interfaces.ParameterListRepository;
 import com.asseco.cas.parameters.domain.ApplicationParameterList;
 import com.asseco.cas.parameters.domain.ParameterItem;
 import com.asseco.cas.parameters.domain.ParameterList;
@@ -17,7 +18,7 @@ import java.util.List;
 @Service
 @Repository
 @Profile("database")
-public class ParameterValuesRepositoryImpl<P extends ParameterList> extends EntityRepositoryImpl<P> implements ParameterListInterface {
+public class ParameterValuesRepositoryImpl<P extends ParameterList> extends EntityRepositoryImpl<ParameterList> implements ParameterListRepository {
 
     private EntityManager getRepository(){
         return em;
@@ -67,7 +68,7 @@ public class ParameterValuesRepositoryImpl<P extends ParameterList> extends Enti
     }
 
     @Override
-    protected Class<P> getEntityClass() {
+    protected Class<ParameterList> getEntityClass() {
         return null;
     }
 
@@ -80,3 +81,4 @@ public class ParameterValuesRepositoryImpl<P extends ParameterList> extends Enti
     public void deleteFromList(Long idList, ParameterItem parameterItem){}
 
 }
+*/
