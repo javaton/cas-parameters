@@ -31,9 +31,15 @@ public class ParameterItemRepositoryImpl<P extends ParameterItem> extends Entity
      * @param parameterItem
      */
 
-    /*public void save(ParameterItem parameterItem) {
+    /* ovde treba da bude store
+    public void save(ParameterItem parameterItem) {
         getRepository().persist(parameterItem);
     }*/
+
+    public ParameterItem store(ParameterItem parameterItem) {
+        getRepository().persist(parameterItem);
+        return parameterItem;
+    }
 
 
     /**
@@ -64,6 +70,10 @@ public class ParameterItemRepositoryImpl<P extends ParameterItem> extends Entity
         getRepository().remove(parameterItem);
     }
 
+    @Override
+    public void delete(Long idParameterList, Long idParameter) {
+        ////Kroz DELETE ne moze da stigne objekat
+    }
 
 
     /**
@@ -107,12 +117,6 @@ public class ParameterItemRepositoryImpl<P extends ParameterItem> extends Entity
 //        }
 //
 //        return list.get(0);
-    }
-
-
-
-    public ArrayList<ParameterItem> readList (){
-        return null;
     }
 
     @Override

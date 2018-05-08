@@ -7,9 +7,7 @@ import java.util.List;
 
 public interface ParameterItemRepository extends EntityRepository<ParameterItem> {
 
-    ParameterItem update(ParameterItem parameterItem);
-
-    ParameterItem findById(Long idParameter);
+    //ParameterItem update(ParameterItem parameterItem);
 
     List<ParameterItem> findAllParameterFromList(String paramListName);
 
@@ -17,7 +15,7 @@ public interface ParameterItemRepository extends EntityRepository<ParameterItem>
 
     void delete(Long idParameterList, ParameterItem parameterItem);
 
-    ParameterItem getParameterFromListByName(String listName, String parameterKey);
+    void delete (Long idParameterList, Long idParameter);
 
-    List<ParameterItem> readList();
+    ParameterItem getParameterFromListByName(String listName, String parameterKey);
 }

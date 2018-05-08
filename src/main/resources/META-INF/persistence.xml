@@ -16,8 +16,8 @@
 		<properties>
 			<!-- Configuring JDBC properties -->
 			<property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@db-orcl:1521:orcl" />
-			<property name="javax.persistence.jdbc.user" value="ivanpuhr" />
-			<property name="javax.persistence.jdbc.password" value="ivan" />
+			<property name="javax.persistence.jdbc.user" value="sofijamolsp" />
+			<property name="javax.persistence.jdbc.password" value="sofija" />
 			<property name="javax.persistence.jdbc.driver" value="oracle.jdbc.driver.OracleDriver" />
 
 			<property name="eclipselink.weaving.fetchgroups" value="static"/>

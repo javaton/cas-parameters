@@ -6,6 +6,7 @@ import com.asseco.cas.parameters.domain.ParameterList;
 import com.asseco.cas.parameters.domain.SystemParameterList;
 import com.asseco.cass.application.ApplicationException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
@@ -18,60 +19,28 @@ import java.util.stream.Collectors;
 @Profile("local")
 public class ParameterItemService implements ParameterItemRepository {
 
-    private List<ParameterItem> list = new ArrayList<>();;
-    private Set<ParameterItem> set = new HashSet<ParameterItem>();
-
-    private List<ParameterList> lists = new ArrayList<>();
-
-    ParameterList parameterList = new SystemParameterList();
+    LocalService lc;
 
     public ParameterItemService(){
-
-        parameterList.setId((long)1);
-        parameterList.setName("ListName");
-        parameterList.setStateCode(ParameterList.ParameterListEnum.INITIAL);
-        parameterList.setVersion((long)123456);
-        lists.add(parameterList);
-
-        ParameterItem items[];
-
-        InputStream is = getClass().getClassLoader().getResourceAsStream("MOCK_DATA.json");
-        if (is != null) {
-            ObjectMapper objectMapper = new ObjectMapper();
-
-            try {
-                items = objectMapper.readValue(is, ParameterItem[].class);
-                Collections.addAll(list, items);
-                Collections.addAll(set, items);
-                parameterList.setParameterItems(set);
-            } catch (IOException e) {
-                System.out.print(e.getMessage());
-            }
-        }
-
+        lc = LocalService.getLocalService();
     }
 
 
-    public List<ParameterItem> readList (){  return parameterList.getParameterItems().stream().collect(Collectors.toList()); }
-
-
-    public ParameterItem store(ParameterItem parameterItem) {
+    /*public ParameterItem store(ParameterItem parameterItem) {
         parameterItem.setId((long)parameterList.getParameterItems().size()+1);
         set.add(parameterItem);
         parameterList.setParameterItems(set);
         return parameterItem;
-    }
+    }*/
 
-    @Override
-    public void remove(ParameterItem parameterItem) {
+    public ParameterItem store(ParameterItem parameterItem) {return null;}
 
-    }
 
-    @Override
+    /*@Override
     public ParameterItem update(ParameterItem parameterItem) {
 
 
-        for(Iterator<ParameterItem> it = parameterList.getParameterItems().iterator(); it.hasNext(); ){
+        for(Iterator<ParameterItem> it = lc.getParameterList().getParameterItems().iterator(); it.hasNext(); ){
             ParameterItem parameter = it.next();
             if(parameter.getKey().equals(parameterItem.getKey())){
                 parameter.setValue(parameterItem.getValue());
@@ -80,34 +49,36 @@ public class ParameterItemService implements ParameterItemRepository {
             }
         }
         return null;
-    }
+    }*/
 
 
     public void delete(Long idParameterList, ParameterItem parameterItem) {
-        if (parameterList.getId().equals(idParameterList)) {
-            Set <ParameterItem> tmpSet = parameterList.getParameterItems();
-            for (Iterator<ParameterItem> it = tmpSet.iterator(); it.hasNext(); ) {
-                ParameterItem p = it.next();
-                if ((p.getId()).equals(parameterItem.getId())) {
-                    it.remove();
-                    parameterList.setParameterItems(tmpSet);
-                }
-            }
-        }
+
+
     }
 
     @Override
-    public ParameterItem findById(Long idParameter) {
+    public void delete(Long idParameterList, Long idParameter) {
+        List<ParameterList> parameterValuesList = lc.getParameterValuesList();
 
-        Set<ParameterItem> pList = parameterList.getParameterItems();
+        for (ParameterList parameterList : parameterValuesList){
 
-        for(Iterator<ParameterItem> it = pList.iterator(); it.hasNext();){
-            ParameterItem p = it.next();
-            if((p.getId()).equals(idParameter)){
-                return p;
+            if (parameterList.getId().equals(idParameterList)) {
+
+                Set <ParameterItem> tmpSet = parameterList.getParameterItems();
+
+                for (Iterator<ParameterItem> it = tmpSet.iterator(); it.hasNext(); ) {
+                    ParameterItem p = it.next();
+
+                    if ((p.getId()).equals(idParameter)) {
+
+                        it.remove();
+                        parameterList.setParameterItems(tmpSet);
+
+                    }
+                }
             }
         }
-        return null;
     }
 
     @Override
@@ -118,8 +89,9 @@ public class ParameterItemService implements ParameterItemRepository {
     @Override
     public List<ParameterItem> findAllParameterFromList(String paramListName) {
 
-        for (Iterator<ParameterList> it = lists.iterator(); it.hasNext(); ){
+        for (Iterator<ParameterList> it = lc.getParameterValuesList().iterator(); it.hasNext(); ){
             ParameterList pList = it.next();
+            System.out.println(pList.getName());
             if ((pList.getName()).equals(paramListName)) {
                 return pList.getParameterItems().stream().collect(Collectors.toList());
             }
@@ -130,7 +102,7 @@ public class ParameterItemService implements ParameterItemRepository {
     @Override
     public List<ParameterItem> findAllParameterFromList(Long idParameterList) {
 
-        for (Iterator<ParameterList> it = lists.iterator(); it.hasNext(); ){
+        for (Iterator<ParameterList> it = lc.getParameterValuesList().iterator(); it.hasNext(); ){
             ParameterList pList = it.next();
             if ((pList.getId()).equals(idParameterList)) {
                 return pList.getParameterItems().stream().collect(Collectors.toList());
@@ -142,15 +114,36 @@ public class ParameterItemService implements ParameterItemRepository {
     @Override
     public ParameterItem getParameterFromListByName(String listName, String parameterKey) {
 
-        if(parameterList.getName().equals(listName)){
-            for(Iterator<ParameterItem> it = list.iterator(); it.hasNext();){
-                ParameterItem p = it.next();
-                if(parameterKey.equals(p.getKey())){
-                    return p;
+        for(ParameterList parameterList : lc.getParameterValuesList()){
+            if(parameterList.getName().equals(listName)){
+                for(Iterator<ParameterItem> it = parameterList.getParameterItems().iterator(); it.hasNext();){
+                    ParameterItem p = it.next();
+                    if(parameterKey.equals(p.getKey())){
+                        return p;
+                    }
                 }
             }
         }
-
         return null;
     }
+
+
+
+    @Override
+    public ParameterItem findById(Long idItem) {
+
+        for(ParameterList parameterList : lc.getParameterValuesList()){
+
+            for (ParameterItem pItem : parameterList.getParameterItems()){
+                if (pItem.getId()== idItem)
+                    return pItem;
+            }
+        }
+        return null;
+    }
+
+
+    @Override
+    public void remove(ParameterItem parameterItem) {}
+
 }

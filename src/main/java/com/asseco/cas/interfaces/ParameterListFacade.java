@@ -3,10 +3,15 @@ package com.asseco.cas.interfaces;
 import com.asseco.cas.parameters.domain.ParameterItem;
 import com.asseco.cas.parameters.domain.ParameterList;
 
+import java.util.List;
 
-//Da bi mogao da pristupim dodatnim metodama, a da ih ne definisem u  prvom interfejsu
+public interface ParameterListFacade {
 
-public interface ParameterListExtended extends ParameterListRepository {
+    List<ParameterList> findAll();
+
+    ParameterList findById(Long idParameterList);
+
+    ParameterList store(ParameterList parameterList);
 
     ParameterItem saveParameterToList(Long idList, ParameterItem parameterItem);
 
@@ -14,8 +19,6 @@ public interface ParameterListExtended extends ParameterListRepository {
 
     ParameterItem updateParameterInList (Long idList, ParameterItem parameterItem);
 
-    void deleteFromList(Long idList, ParameterItem parameterItem);
-
-    ParameterItem getParameterItem(Long idList, Long idItem);
+    void remove(Long idList);
 
 }

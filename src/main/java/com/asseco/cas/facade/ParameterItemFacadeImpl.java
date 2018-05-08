@@ -1,6 +1,7 @@
 package com.asseco.cas.facade;
 
 
+import com.asseco.cas.interfaces.ParameterItemFacade;
 import com.asseco.cas.interfaces.ParameterItemRepository;
 import com.asseco.cas.parameters.domain.ParameterItem;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,19 +11,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class ParameterItemFacade {
+public class ParameterItemFacadeImpl  implements ParameterItemFacade {
 
     ParameterItemRepository parameterItemRepository;
 
     @Autowired
-    public ParameterItemFacade(ParameterItemRepository parameterItemRepository){
+    public ParameterItemFacadeImpl(ParameterItemRepository parameterItemRepository){
         this.parameterItemRepository = parameterItemRepository;
     }
 
-
-    public List<ParameterItem> readList() {
-        return parameterItemRepository.readList();
-    }
 
     public ParameterItem findById(Long idParameter) {
         if (idParameter != null)
@@ -43,18 +40,21 @@ public class ParameterItemFacade {
         else return false;
     }
 
-    public ParameterItem update(ParameterItem parameterItem) {
+    /*public ParameterItem update(ParameterItem parameterItem) {
         if (parameterItem.getKey() != null)
             return parameterItemRepository.update(parameterItem);
 
         return null;
+    }*/
+
+
+    public void delete(Long idParameterList, ParameterItem parameterItem) {
+
     }
 
-    //TODO Ovde mora delete sa dva parametra da bi imalo smisla
-    //U suprotnom ne zna se iz koje se liste brise
-    //remove prihvata samo jedan parametar
-    public void delete(Long idParameterList, ParameterItem parameterItem) {
-        parameterItemRepository.delete(idParameterList, parameterItem);
+    @Override
+    public void delete(Long idParameterList, Long idParameter) {
+        parameterItemRepository.delete(idParameterList, idParameter);
     }
 
 

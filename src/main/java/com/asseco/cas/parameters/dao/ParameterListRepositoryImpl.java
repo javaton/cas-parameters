@@ -1,6 +1,6 @@
 package com.asseco.cas.parameters.dao;
 
-import com.asseco.cas.interfaces.ParameterListExtended;
+import com.asseco.cas.interfaces.ParameterListRepository;
 import com.asseco.cas.parameters.domain.ApplicationParameterList;
 import com.asseco.cas.parameters.domain.ParameterItem;
 import com.asseco.cas.parameters.domain.ParameterList;
@@ -10,26 +10,27 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 
 import java.util.List;
 
-//@Repository
+
 @Service
 @EnableAutoConfiguration
 @Repository
 @Profile("database")
-public class ParameterListRepositoryImpl extends EntityRepositoryImpl<ParameterList> implements ParameterListExtended {
+public class ParameterListRepositoryImpl extends EntityRepositoryImpl<ParameterList> implements ParameterListRepository {
 
-    EntityManagerFactory emf = Persistence.createEntityManagerFactory("parametersPU");
+    /*EntityManagerFactory emf = Persistence.createEntityManagerFactory("parametersPU");
 
-
+    EntityManager entityManager = em;
 
     private EntityManager getRepository(){
-        em = emf.createEntityManager();
-        return em;
-    }
+        entityManager = emf.createEntityManager();
+        return entityManager;
+    }*/
 
 //    @Override
 //    public ParameterList store(ParameterList entity) {
@@ -37,30 +38,69 @@ public class ParameterListRepositoryImpl extends EntityRepositoryImpl<ParameterL
 //        return super.store(entity);
 //    }
 
+
+    /*@Transactional
     @Override
     public ParameterList store(ParameterList entity) {
         getRepository();
         if(entity == null) {
             return null;
         } else {
+            entityManager.getTransaction().begin();
+
             if(entity.getId() == null) {
+
                 System.out.println("Store new " + entity.getId());
-                this.em.persist(entity);
+                //this.entityManager.joinTransaction();
+                this.entityManager.persist(entity);
                 System.out.println("After persist new " + entity.getId());
+
             } else {
-                entity = this.em.merge(entity);
+                entity = this.entityManager.merge(entity);
+                entityManager.flush();
+
             }
 
-            this.em.close();
+            entityManager.getTransaction().commit();
+
+            //this.entityManager.close();
+            return entity;
+        }
+    }*/
+
+
+    @PersistenceUnit
+    private EntityManagerFactory entityManagerFactory;
+
+    EntityManager entManager = entityManagerFactory.createEntityManager();
+
+
+    @Transactional
+    @Override
+    public ParameterList store(ParameterList entity){
+        if(entity==null){
+            return null;
+        } else {
+            if(entity.getId()==null) {
+                entManager.persist(entity);
+            } else {
+                entManager.merge(entity);
+            }
             return entity;
         }
     }
 
+
+
+
+
+
     public List<ParameterList> findAll() {
-        String queryString =  " select pl from ParameterList pl order by pl.name " ;
+        /*String queryString =  " select pl from ParameterList pl order by pl.name " ;
         System.out.println("Status " + getRepository().isOpen());
         Query q = getRepository().createQuery(queryString);
-        return q.getResultList();
+        return q.getResultList();*/
+        return null;
     }
 
     public List<ParameterList> findByName(String parameterListName){
@@ -81,11 +121,6 @@ public class ParameterListRepositoryImpl extends EntityRepositoryImpl<ParameterL
         return null;
     }
 
-
-
-
-
-    //Dodate da bi Spring hteo da kraira Bean od Interfejsa
     @Override
     protected Class<ParameterList> getEntityClass() {
         return ParameterList.class;
@@ -106,12 +141,9 @@ public class ParameterListRepositoryImpl extends EntityRepositoryImpl<ParameterL
         return null;
     }
 
-    @Override
-    public void deleteFromList(Long idList, ParameterItem parameterItem) {
+
+    public void remove (Long idLong){
+        //Kroz DELETE ne moze da stigne objekat
     }
 
-    @Override
-    public ParameterItem getParameterItem(Long idList, Long idItem) {
-        return null;
-    }
 }
