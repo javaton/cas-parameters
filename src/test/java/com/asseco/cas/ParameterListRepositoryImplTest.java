@@ -18,18 +18,22 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * Created by djordje.colovic on 26-Apr-18.
- */
+/*
 
-@RunWith(SpringRunner.class)
+ * Created by djordje.colovic on 26-Apr-18.
+
+*/
+
+
+/*@RunWith(SpringRunner.class)
 @ComponentScan
 @EnableAutoConfiguration
-@ActiveProfiles("database")
+@ActiveProfiles("database")*/
 public class ParameterListRepositoryImplTest {
 
 
     private ParameterListRepository parameterListRepository;
+/*
 
     @Autowired
     public void setParameterListRepository(ParameterListRepositoryImpl listInterface) {
@@ -48,7 +52,9 @@ public class ParameterListRepositoryImplTest {
         parameterList.addParameter(pi);
         System.out.println();
     }
+*/
 
+/*
     @Test
     public void storeParameterList(){
         ParameterList testObject = parameterListRepository.store(parameterList);
@@ -64,8 +70,7 @@ public class ParameterListRepositoryImplTest {
         List<ParameterList> testObject = parameterListRepository.findAll();
         System.out.println("Test object list size " + testObject.size());
         Assert.assertNotEquals(0, testObject.size());
-
-
     }
+*/
 
 }

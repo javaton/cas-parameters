@@ -67,6 +67,13 @@ public class ParameterListRepositoryImpl extends EntityRepositoryImpl<ParameterL
         return q.getResultList();
     }
 
+    @Override
+    public ParameterList findById(Long idParameterList){
+        return null;
+    }
+
+
+
     public List<ParameterList> findByName(String parameterListName){
         String queryString =  " select pl from ParameterList pl where pl.name='"+parameterListName+"'" ;
 //        return getRepository().executeQuery(queryString);

@@ -84,25 +84,25 @@ public class ParameterItemRepositoryImpl<P extends ParameterItem> extends Entity
      * @param paramListName
      * @return
      */
-    public List<ParameterItem> findAllParameterFromList(String paramListName) {
+    /*public List<ParameterItem> findAllParameterFromList(String paramListName) {
         String query = "select p from ParameterItem p "
                 + "where p.parameterList.name =" + "'" + paramListName + "'";
         System.out.println(query);
         Query q = getRepository().createQuery(query);
         return q.getResultList();
     }
-    /**
+    *//**
      * Function that finds all parameterItems from given ParameterList
      * @param idParameterList
      * @return
-     */
+     *//*
     public List<ParameterItem> findAllParameterFromList(Long idParameterList) {
         String query = "select p from ParameterItem p "
                 + "where p.parameterList.id =" + "'" + idParameterList + "'";
         System.out.println(query);
         Query q = getRepository().createQuery(query);
         return q.getResultList();
-    }
+    }*/
 
     public ParameterItem getParameterFromListByName(String listName, String parameterKey){
         String queryString = " select p from ParameterItem p " +

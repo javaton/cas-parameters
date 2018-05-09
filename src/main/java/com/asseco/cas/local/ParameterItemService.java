@@ -86,7 +86,7 @@ public class ParameterItemService implements ParameterItemRepository {
         return null;
     }
 
-    @Override
+    /*@Override
     public List<ParameterItem> findAllParameterFromList(String paramListName) {
 
         for (Iterator<ParameterList> it = lc.getParameterValuesList().iterator(); it.hasNext(); ){
@@ -109,7 +109,7 @@ public class ParameterItemService implements ParameterItemRepository {
             }
         }
         return null;
-    }
+    }*/
 
     @Override
     public ParameterItem getParameterFromListByName(String listName, String parameterKey) {

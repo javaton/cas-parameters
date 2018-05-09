@@ -9,10 +9,6 @@ public interface ParameterItemRepository extends EntityRepository<ParameterItem>
 
     //ParameterItem update(ParameterItem parameterItem);
 
-    List<ParameterItem> findAllParameterFromList(String paramListName);
-
-    List<ParameterItem> findAllParameterFromList(Long idParameterList);
-
     //void delete(Long idParameterList, ParameterItem parameterItem);
 
     void delete (Long idParameterList, Long idParameter);

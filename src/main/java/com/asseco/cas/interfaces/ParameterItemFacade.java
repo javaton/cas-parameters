@@ -16,10 +16,6 @@ public interface ParameterItemFacade {
 
     void delete(Long idParameterList, Long idParameter);
 
-    List<ParameterItem> findAllParameterFromList(String paramListName);
-
-    List<ParameterItem> findAllParameterFromList(Long idParameterList);
-
     ParameterItem getParameterFromListByName(String listName, String parameterKey);
 
     ParameterItem saveParameterToList(Long idList, ParameterItem parameterItem);
