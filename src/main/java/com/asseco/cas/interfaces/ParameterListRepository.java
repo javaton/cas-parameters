@@ -24,11 +24,6 @@ public interface ParameterListRepository extends EntityRepository<ParameterList>
 
     ParameterList update(ParameterList parameterList);
 
-    ParameterItem saveParameterToList(Long idList, ParameterItem parameterItem);
-
-    //sporna metoda sa update iz item-a
-    ParameterItem updateParameterInList (Long idList, ParameterItem parameterItem);
-
     void remove(Long idList);
 
 }

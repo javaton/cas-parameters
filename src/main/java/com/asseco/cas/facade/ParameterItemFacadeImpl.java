@@ -67,10 +67,11 @@ public class ParameterItemFacadeImpl  implements ParameterItemFacade {
             System.out.println("Exception in findAllParameterFromList(Long): " + e.getMessage());
         }
 
-        if (!(p.isEmpty()))
+        return p;
+        /*if (!(p.isEmpty()))
             return p;
 
-        return null;
+        return null;*/
     }
 
 
@@ -95,6 +96,27 @@ public class ParameterItemFacadeImpl  implements ParameterItemFacade {
             return parameterItemRepository.getParameterFromListByName(listName, parameterKey);
 
         }
+        return null;
+    }
+
+    public ParameterItem saveParameterToList(Long idList, ParameterItem parameterItem){
+
+        if(idList != 0 && idList > 0 && parameterItem.getKey() != null
+                && parameterItem.getValue() != null
+                && parameterItem.getDescription() !=null)
+            return parameterItemRepository.saveParameterToList(idList, parameterItem);
+
+        return null;
+    }
+
+    public ParameterItem updateParameterInList (Long idList, ParameterItem parameterItem){
+
+        if(idList != null && idList > 0
+                && parameterItem.getKey() != null
+                && parameterItem.getValue() != null
+                && parameterItem.getDescription() !=null)
+            return parameterItemRepository.updateParameterInList(idList, parameterItem);
+
         return null;
     }
 

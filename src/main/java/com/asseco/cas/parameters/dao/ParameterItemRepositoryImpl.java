@@ -4,7 +4,9 @@ import com.asseco.cas.interfaces.ParameterItemRepository;
 import com.asseco.cas.parameters.domain.ParameterItem;
 import com.asseco.cass.application.ApplicationException;
 import com.asseco.cass.persist.EntityRepositoryImpl;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
@@ -16,7 +18,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-//@Repository
+@Repository
+@EnableAutoConfiguration
 @Service
 @Profile("database")
 public class ParameterItemRepositoryImpl<P extends ParameterItem> extends EntityRepositoryImpl<ParameterItem> implements ParameterItemRepository {
@@ -123,4 +126,22 @@ public class ParameterItemRepositoryImpl<P extends ParameterItem> extends Entity
     protected Class getEntityClass() {
         return ParameterItem.class;
     }
+
+
+    @Override
+    public ParameterItem saveParameterToList(Long idList, ParameterItem parameterItem) {
+        return null;
+    }
+
+
+    @Override
+    public ParameterItem updateParameterInList(Long idList, ParameterItem parameterItem) {
+        return null;
+    }
+
+
+
+
+
+
 }

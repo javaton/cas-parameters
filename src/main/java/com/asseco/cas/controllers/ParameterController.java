@@ -64,7 +64,7 @@ public class ParameterController {
 
     @RequestMapping(value = "/parameter-lists/{idList}", method = RequestMethod.POST,  consumes = MediaType.APPLICATION_JSON_VALUE)
     public ParameterItem addParameterToList(@PathVariable(value = "idList") Long idList, @RequestBody ParameterItem parameterItem, HttpServletResponse response){
-        ParameterItem pItem = parameterListFacadeImpl.saveParameterToList(idList, parameterItem);
+        ParameterItem pItem = parameterItemFacadeImpl.saveParameterToList(idList, parameterItem);
         if (!(pItem==null)){
             response.setStatus(201);
             return pItem;
@@ -83,7 +83,7 @@ public class ParameterController {
 
     @RequestMapping(value = "/parameter-lists/{idList}", method = RequestMethod.PUT,  consumes = MediaType.APPLICATION_JSON_VALUE)
     public ParameterItem editParameterInList(@PathVariable(value = "idList") Long idList, @RequestBody ParameterItem parameterItem, HttpServletResponse response){
-        ParameterItem pItem = parameterListFacadeImpl.updateParameterInList(idList, parameterItem);
+        ParameterItem pItem = parameterItemFacadeImpl.updateParameterInList(idList, parameterItem);
         if (!(pItem==null)){
             response.setStatus(200);
             return pItem;

@@ -71,22 +71,7 @@ public class ParameterListService implements ParameterListRepository {
         return null;
     }
 
-    public ParameterItem saveParameterToList(Long idList, ParameterItem parameterItem){
 
-        for(ParameterList pList : lc.getParameterValuesList()){
-            if (pList.getId().equals(idList)){
-                try {
-                    parameterItem.setId((long)pList.getParameterItems().size()+1);
-                    Set<ParameterItem> set = pList.getParameterItems();
-                    set.add(parameterItem);
-                    pList.setParameterItems(set);
-                } catch (Exception e){return null;}
-                return parameterItem;
-            }
-        }
-
-        return null;
-    }
 
     public ParameterList update(ParameterList parameterList) {
 
@@ -103,26 +88,7 @@ public class ParameterListService implements ParameterListRepository {
         return null;
     }
 
-    public ParameterItem updateParameterInList (Long idList, ParameterItem parameterItem){
 
-        for(ParameterList pList : lc.getParameterValuesList()){
-            if(pList.getId().equals(idList)){
-                Set<ParameterItem> tmp = pList.getParameterItems();
-
-                for(ParameterItem pItem : tmp){
-                    if(pItem.getId().equals(parameterItem.getId())){
-                        try {
-                            pItem.setKey(parameterItem.getKey());
-                            pItem.setDescription(parameterItem.getDescription());
-                            pItem.setValue(parameterItem.getValue());
-                            return pItem;
-                        } catch(Exception e){return null;}
-                    }
-                }
-            }
-        }
-        return null;
-    }
 
 
     public void remove(Long idList) {

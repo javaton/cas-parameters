@@ -22,4 +22,8 @@ public interface ParameterItemFacade {
 
     ParameterItem getParameterFromListByName(String listName, String parameterKey);
 
+    ParameterItem saveParameterToList(Long idList, ParameterItem parameterItem);
+
+    ParameterItem updateParameterInList (Long idList, ParameterItem parameterItem);
+
 }

@@ -37,15 +37,7 @@ public class ParameterListFacadeImpl implements ParameterListFacade {
         //return null;
     }
 
-    public ParameterItem saveParameterToList(Long idList, ParameterItem parameterItem){
 
-        if(idList != 0 && idList > 0 && parameterItem.getKey() != null
-                && parameterItem.getValue() != null
-                && parameterItem.getDescription() !=null)
-                return parameterListRepository.saveParameterToList(idList, parameterItem);
-
-        return null;
-    }
 
     public ParameterList update(ParameterList parameter){
 
@@ -54,18 +46,6 @@ public class ParameterListFacadeImpl implements ParameterListFacade {
                 && parameter.getStateCode() != null
                 && parameter.getVersion() != null)
             return parameterListRepository.update(parameter);
-
-        return null;
-    }
-
-
-    public ParameterItem updateParameterInList (Long idList, ParameterItem parameterItem){
-
-        if(idList != null && idList > 0
-                && parameterItem.getKey() != null
-                && parameterItem.getValue() != null
-                && parameterItem.getDescription() !=null)
-                return parameterListRepository.updateParameterInList(idList, parameterItem);
 
         return null;
     }

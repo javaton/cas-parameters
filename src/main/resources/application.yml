@@ -1,8 +1,11 @@
 spring:
-  profiles.active: database
+  profiles.active: resource-local
 ---
 spring:
   profiles: database
 ---
 spring:
   profiles: local
+---
+spring:
+  profiles: resource-local

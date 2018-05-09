@@ -91,17 +91,7 @@ public class ParameterListRepositoryImpl extends EntityRepositoryImpl<ParameterL
     }
 
     @Override
-    public ParameterItem saveParameterToList(Long idList, ParameterItem parameterItem) {
-        return null;
-    }
-
-    @Override
     public ParameterList update(ParameterList parameter) {
-        return null;
-    }
-
-    @Override
-    public ParameterItem updateParameterInList(Long idList, ParameterItem parameterItem) {
         return null;
     }
 

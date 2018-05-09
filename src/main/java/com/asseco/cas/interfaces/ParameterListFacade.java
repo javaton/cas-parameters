@@ -13,11 +13,7 @@ public interface ParameterListFacade {
 
     ParameterList store(ParameterList parameterList);
 
-    ParameterItem saveParameterToList(Long idList, ParameterItem parameterItem);
-
     ParameterList update(ParameterList parameter);
-
-    ParameterItem updateParameterInList (Long idList, ParameterItem parameterItem);
 
     void remove(Long idList);
 
