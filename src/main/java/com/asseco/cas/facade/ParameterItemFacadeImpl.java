@@ -58,7 +58,7 @@ public class ParameterItemFacadeImpl  implements ParameterItemFacade {
     }
 
 
-    public List<ParameterItem> findAllParameterFromList(String paramListName) {
+    /*public List<ParameterItem> findAllParameterFromList(String paramListName) {
 
         List<ParameterItem> p = new ArrayList<>();
         try {
@@ -68,10 +68,10 @@ public class ParameterItemFacadeImpl  implements ParameterItemFacade {
         }
 
         return p;
-        /*if (!(p.isEmpty()))
+        *//*if (!(p.isEmpty()))
             return p;
 
-        return null;*/
+        return null;*//*
     }
 
 
@@ -87,7 +87,7 @@ public class ParameterItemFacadeImpl  implements ParameterItemFacade {
             return p;
 
         return null;
-    }
+    }*/
 
 
     public ParameterItem getParameterFromListByName(String listName, String parameterKey) {

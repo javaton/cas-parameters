@@ -147,7 +147,7 @@ public class ParameterController {
 
 
 
-    @RequestMapping (value = "/parameter-items/{name:[\\D]+}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    /*@RequestMapping (value = "/parameter-items/{name:[\\D]+}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public List<ParameterItem> allFromList(@PathVariable(value = "name")String name, HttpServletResponse response){
         List<ParameterItem> p = parameterItemFacadeImpl.findAllParameterFromList(name);
         if (!(p.isEmpty())){
@@ -157,15 +157,15 @@ public class ParameterController {
             response.setStatus(400);
             return null;
         }
-    }
+    }*/
 
 
 
     @RequestMapping (value = "/parameter-items/{id:[\\d]+}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<ParameterItem> allFromList(@PathVariable(value = "id")Long id, HttpServletResponse response){
-        List<ParameterItem> p = parameterItemFacadeImpl.findAllParameterFromList(id);
+    public ParameterList allFromList(@PathVariable(value = "id")Long id, HttpServletResponse response){
+        ParameterList p = parameterListFacadeImpl.findById(id);
 
-        if (!(p.isEmpty())){
+        if (!(p == null)){
             response.setStatus(200);
             return p;
         } else {
@@ -187,10 +187,6 @@ public class ParameterController {
             return null;
         }
     }
-
-
-
-
 
 
 }

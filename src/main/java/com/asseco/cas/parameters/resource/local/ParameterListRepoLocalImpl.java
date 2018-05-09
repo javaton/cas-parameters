@@ -61,17 +61,23 @@ public class ParameterListRepoLocalImpl extends EntityRepositoryImpl<ParameterLi
 
     @Override
     public List<ParameterList> findAll() {
-        String queryString =  " select pl from ParameterList pl order by pl.name " ;
+        String queryString =  " select pl from ParameterList pl " ;
         System.out.println("Status " + getRepository().isOpen());
         Query q = getRepository().createQuery(queryString);
         return q.getResultList();
     }
 
+    public ParameterList findById(Long idParameterList){
+        String query = "select p from ParameterList p where p.id=" + idParameterList;
+        System.out.println(query);
+        ParameterList parameterList = (ParameterList)getRepository().createQuery(query).getSingleResult();
+        return parameterList;
+    }
 
     //Da li cemo imati liste sa istim imenom?
     @Override
     public List<ParameterList> findByName(String parameterListName) {
-        String queryString =  " select pl from ParameterList pl where pl.name='"+parameterListName+"'" ;
+        String queryString =  " select * from PARAMETER_LIST pl where pl.PARAMETER_NAME='"+parameterListName+"'" ;
         Query q = getRepository().createQuery(queryString);
         return q.getResultList();
     }
