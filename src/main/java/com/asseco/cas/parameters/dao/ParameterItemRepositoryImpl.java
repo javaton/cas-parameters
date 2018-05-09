@@ -34,11 +34,6 @@ public class ParameterItemRepositoryImpl<P extends ParameterItem> extends Entity
      * @param parameterItem
      */
 
-    /* ovde treba da bude store
-    public void save(ParameterItem parameterItem) {
-        getRepository().persist(parameterItem);
-    }*/
-
     public ParameterItem store(ParameterItem parameterItem) {
         getRepository().persist(parameterItem);
         return parameterItem;
@@ -54,28 +49,15 @@ public class ParameterItemRepositoryImpl<P extends ParameterItem> extends Entity
         return getRepository().merge(parameterItem);
     }
 
-    /**
-     * Function that remove ParameterItem
-     * @param parameterItem
-     * @throws ApplicationException
-     */
-    public void delete(Long idParameterList, ParameterItem parameterItem) throws ApplicationException {
-//        ParameterList parameterList = getRepository().findById(ParameterList.class, idParameterList);
-//
-//        if(parameterList == null){
-//            throw new ParameterListNotFoundException("ParameterItem list not found!!");
-//        }
-//
-//        if(parameterList.getParameterItems() != null){
-//            parameterList.getParameterItems().remove(parameterItem);
-//        }
-
-        getRepository().remove(parameterItem);
-    }
 
     @Override
     public void delete(Long idParameterList, Long idParameter) {
         ////Kroz DELETE ne moze da stigne objekat
+    }
+
+    @Override
+    public ParameterItem getParameterFromList(Long listId, Long itemId) {
+        return null;
     }
 
 
@@ -104,7 +86,7 @@ public class ParameterItemRepositoryImpl<P extends ParameterItem> extends Entity
         return q.getResultList();
     }*/
 
-    public ParameterItem getParameterFromListByName(String listName, String parameterKey){
+    public ParameterItem getParameterFromList(String listName, String parameterKey){
         String queryString = " select p from ParameterItem p " +
                 " where p.key = :keyParam and " +
                 "       p.parameterList.name = :listNameParam ";

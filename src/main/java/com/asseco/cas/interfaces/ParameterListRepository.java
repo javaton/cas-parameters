@@ -16,14 +16,19 @@ public interface ParameterListRepository extends EntityRepository<ParameterList>
 
     ParameterList findById(Long idParameterList);
 
-    List<ParameterList> findByName(String parameterListName);
-
-    List<ApplicationParameterList> findAllApplicationLists();
-
-    List<SystemParameterList> findAllSystemLists();
-
     ParameterList update(ParameterList parameterList);
 
     void remove(Long idList);
+
+
+
+//_____________________________________
+
+//trenutno se ne koriste
+    List<ParameterList> findByName(String parameterListName);
+
+    List<ApplicationParameterList> findAllApplicationLists();
+    List<SystemParameterList> findAllSystemLists();
+//_____________________________________
 
 }

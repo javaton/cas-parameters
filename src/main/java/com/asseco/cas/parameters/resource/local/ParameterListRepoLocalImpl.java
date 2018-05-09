@@ -67,6 +67,8 @@ public class ParameterListRepoLocalImpl extends EntityRepositoryImpl<ParameterLi
         return q.getResultList();
     }
 
+
+    @Override
     public ParameterList findById(Long idParameterList){
         String query = "select p from ParameterList p where p.id=" + idParameterList;
         System.out.println(query);
@@ -74,13 +76,81 @@ public class ParameterListRepoLocalImpl extends EntityRepositoryImpl<ParameterLi
         return parameterList;
     }
 
-    //Da li cemo imati liste sa istim imenom?
+
+    //Videti da li je merge is save-a dovoljan
+    @Override
+    public ParameterList update(ParameterList entity) {
+        /*getRepository();
+        if(entity == null) {
+            return null;
+        } else {
+            em.getTransaction().begin();
+
+            if(entity.getId() == null) {
+
+                System.out.println("Store new " + entity.getId());
+                this.em.persist(entity);
+                System.out.println("After persist new " + entity.getId());
+
+            } else {
+                entity = this.em.merge(entity);
+                em.flush();
+
+            }
+            em.getTransaction().commit();
+
+            return entity;
+        }*/
+
+        return null;
+    }
+
+
+    @Override
+    public void remove(Long idList) {
+        getRepository();
+        em.getTransaction().begin();
+
+        String query = "delete from ParameterList p where p.id=" + idList;
+        System.out.println(query);
+        em.createQuery(query).executeUpdate();
+
+        em.getTransaction().commit();
+        em.close();
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     @Override
     public List<ParameterList> findByName(String parameterListName) {
         String queryString =  " select * from PARAMETER_LIST pl where pl.PARAMETER_NAME='"+parameterListName+"'" ;
         Query q = getRepository().createQuery(queryString);
         return q.getResultList();
     }
+
+
+
+
+
+
+
+
+
+
+
 
     @Override
     public List<ApplicationParameterList> findAllApplicationLists() {
@@ -90,17 +160,6 @@ public class ParameterListRepoLocalImpl extends EntityRepositoryImpl<ParameterLi
     @Override
     public List<SystemParameterList> findAllSystemLists() {
         return null;
-    }
-
-    @Override
-    public ParameterList update(ParameterList parameterList) {
-        return null;
-    }
-
-
-    @Override
-    public void remove(Long idList) {
-
     }
 
     @Override

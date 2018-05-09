@@ -29,6 +29,7 @@ public class ParameterListFacadeImpl implements ParameterListFacade {
         return parameterListRepository.findById(idParameterList);
     }
 
+
    public ParameterList store(ParameterList parameterList){
 
        // if (parameterList.getId() != null && parameterList.getId()>0)
@@ -36,7 +37,6 @@ public class ParameterListFacadeImpl implements ParameterListFacade {
 
         //return null;
     }
-
 
 
     public ParameterList update(ParameterList parameter){
@@ -49,6 +49,7 @@ public class ParameterListFacadeImpl implements ParameterListFacade {
 
         return null;
     }
+
 
     public void remove(Long idList){
         if(idList != null && idList > 0)

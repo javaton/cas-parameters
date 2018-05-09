@@ -50,6 +50,18 @@ public class ParameterController {
         } else {response.setStatus(400); return null;}
     }
 
+    @RequestMapping (value = "/parameter-lists/{list}/{item}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ParameterItem getByName(@PathVariable(value = "list")Long listId, @PathVariable(value = "item")Long itemId, HttpServletResponse response){
+        ParameterItem p = parameterItemFacadeImpl.getParameterFromList(listId, itemId);
+        if (p!=null) {
+            response.setStatus(200);
+            return p;
+        } else {
+            response.setStatus(400);
+            return null;
+        }
+    }
+
 
     //TODO Potrebno je napraviti razliku izmedju System i ApplicationParameterList, jer implementacija samo ParameterLista ne moze da se mapira iz JSON-a
     @RequestMapping(value = "/parameter-list", method = RequestMethod.POST,  consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -90,39 +102,12 @@ public class ParameterController {
         } else {response.setStatus(400); return null;}
     }
 
-
     //TODO void je definisan u DAO
+
     @RequestMapping(value = "/parameter-lists/{idList}", method = RequestMethod.DELETE,  consumes = MediaType.APPLICATION_JSON_VALUE)
     public void deleteList(@PathVariable (value = "idList")Long idList, HttpServletResponse response){
         parameterListFacadeImpl.remove(idList);
     }
-
-
-    /*@RequestMapping(value = "/parameter-item", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ParameterItem addParameter(@RequestBody ParameterItem parameterItem, HttpServletResponse response){
-
-        if(parameterItemFacadeImpl.store(parameterItem)) {
-            response.setStatus(201);
-            return findById(parameterItem.getId(), response);
-        } else {
-            response.setStatus(400);
-            return null;
-        }
-    }*/
-
-
-
-    /*@RequestMapping (value = "/parameter-item", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ParameterItem updateParameter (@RequestBody ParameterItem parameterItem, HttpServletResponse response){
-        ParameterItem p = parameterItemFacadeImpl.update(parameterItem);
-        if (!(p==null)) {
-            response.setStatus(200);
-            return findById(p.getId(), response);
-        }
-        response.setStatus(400);
-        return null;
-
-    }*/
 
 
     @RequestMapping(value = "/parameter-item/{list}/{idParameter}", method = RequestMethod.DELETE)
@@ -131,8 +116,6 @@ public class ParameterController {
         parameterItemFacadeImpl.delete(idParameterList, idParameter);
     }
 
-
-    //@RequestMapping(value = "/parameter-item/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 
     public ParameterItem findById(@PathVariable(value = "id")Long id, HttpServletResponse response){
         ParameterItem p = parameterItemFacadeImpl.findById(id);
@@ -145,48 +128,6 @@ public class ParameterController {
         return null;
     }
 
-
-
-    /*@RequestMapping (value = "/parameter-items/{name:[\\D]+}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<ParameterItem> allFromList(@PathVariable(value = "name")String name, HttpServletResponse response){
-        List<ParameterItem> p = parameterItemFacadeImpl.findAllParameterFromList(name);
-        if (!(p.isEmpty())){
-            response.setStatus(200);
-            return p;
-        } else {
-            response.setStatus(400);
-            return null;
-        }
-    }*/
-
-
-
-    @RequestMapping (value = "/parameter-items/{id:[\\d]+}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ParameterList allFromList(@PathVariable(value = "id")Long id, HttpServletResponse response){
-        ParameterList p = parameterListFacadeImpl.findById(id);
-
-        if (!(p == null)){
-            response.setStatus(200);
-            return p;
-        } else {
-            response.setStatus(400);
-            return null;
-        }
-
-    }
-
-
-    @RequestMapping (value = "/parameter-item/{list}/{key}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ParameterItem getByName(@PathVariable(value = "list")String listName, @PathVariable(value = "key")String parameterKey, HttpServletResponse response){
-        ParameterItem p = parameterItemFacadeImpl.getParameterFromListByName(listName, parameterKey);
-        if (p!=null) {
-            response.setStatus(200);
-            return p;
-        } else {
-            response.setStatus(400);
-            return null;
-        }
-    }
 
 
 }

@@ -71,8 +71,7 @@ public class ParameterListService implements ParameterListRepository {
         return null;
     }
 
-
-
+    @Override
     public ParameterList update(ParameterList parameterList) {
 
         for (ParameterList pList : lc.getParameterValuesList()){
@@ -88,9 +87,7 @@ public class ParameterListService implements ParameterListRepository {
         return null;
     }
 
-
-
-
+    @Override
     public void remove(Long idList) {
         for (Iterator<ParameterList> it = lc.getParameterValuesList().iterator(); it.hasNext(); ) {
             ParameterList pList = it.next();
@@ -102,8 +99,18 @@ public class ParameterListService implements ParameterListRepository {
 
 
 
+
+
+
+
+
+
+
+
     @Override
-    public void remove(ParameterList parameterList){}
+    public void remove(ParameterList parameterList) {
+
+    }
 
     @Override
     public List<ParameterList> findByName(String parameterListName) {

@@ -7,9 +7,6 @@ import com.asseco.cas.parameters.domain.ParameterItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Service
 public class ParameterItemFacadeImpl  implements ParameterItemFacade {
 
@@ -40,64 +37,21 @@ public class ParameterItemFacadeImpl  implements ParameterItemFacade {
         else return false;
     }
 
-    /*public ParameterItem update(ParameterItem parameterItem) {
-        if (parameterItem.getKey() != null)
-            return parameterItemRepository.update(parameterItem);
 
-        return null;
-    }*/
-
-
-    public void delete(Long idParameterList, ParameterItem parameterItem) {
-
-    }
-
-    @Override
     public void delete(Long idParameterList, Long idParameter) {
         parameterItemRepository.delete(idParameterList, idParameter);
     }
 
 
-    /*public List<ParameterItem> findAllParameterFromList(String paramListName) {
+    public ParameterItem getParameterFromList(Long listId, Long itemId) {
 
-        List<ParameterItem> p = new ArrayList<>();
-        try {
-            p = parameterItemRepository.findAllParameterFromList(paramListName);
-        } catch (Exception e){
-            System.out.println("Exception in findAllParameterFromList(Long): " + e.getMessage());
-        }
-
-        return p;
-        *//*if (!(p.isEmpty()))
-            return p;
-
-        return null;*//*
-    }
-
-
-    public List<ParameterItem> findAllParameterFromList(Long idParameterList) {
-        List<ParameterItem> p = new ArrayList<>();
-        try {
-            p = parameterItemRepository.findAllParameterFromList(idParameterList);
-        } catch (Exception e){
-            System.out.println("Exception in findAllParameterFromList(Long): " + e.getMessage());
-        }
-
-        if (!(p.isEmpty()))
-            return p;
-
-        return null;
-    }*/
-
-
-    public ParameterItem getParameterFromListByName(String listName, String parameterKey) {
-
-        if(!(listName.isEmpty()) && !(parameterKey.isEmpty())) {
-            return parameterItemRepository.getParameterFromListByName(listName, parameterKey);
+        if(listId>0 && itemId>0) {
+            return parameterItemRepository.getParameterFromList(listId, itemId);
 
         }
         return null;
     }
+
 
     public ParameterItem saveParameterToList(Long idList, ParameterItem parameterItem){
 
@@ -108,6 +62,7 @@ public class ParameterItemFacadeImpl  implements ParameterItemFacade {
 
         return null;
     }
+
 
     public ParameterItem updateParameterInList (Long idList, ParameterItem parameterItem){
 

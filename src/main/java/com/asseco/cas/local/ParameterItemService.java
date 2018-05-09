@@ -26,36 +26,9 @@ public class ParameterItemService implements ParameterItemRepository {
     }
 
 
-    /*public ParameterItem store(ParameterItem parameterItem) {
-        parameterItem.setId((long)parameterList.getParameterItems().size()+1);
-        set.add(parameterItem);
-        parameterList.setParameterItems(set);
-        return parameterItem;
-    }*/
-
+    @Override
     public ParameterItem store(ParameterItem parameterItem) {return null;}
 
-
-    /*@Override
-    public ParameterItem update(ParameterItem parameterItem) {
-
-
-        for(Iterator<ParameterItem> it = lc.getParameterList().getParameterItems().iterator(); it.hasNext(); ){
-            ParameterItem parameter = it.next();
-            if(parameter.getKey().equals(parameterItem.getKey())){
-                parameter.setValue(parameterItem.getValue());
-                parameter.setDescription(parameterItem.getDescription());
-                return parameter;
-            }
-        }
-        return null;
-    }*/
-
-
-    public void delete(Long idParameterList, ParameterItem parameterItem) {
-
-
-    }
 
     @Override
     public void delete(Long idParameterList, Long idParameter) {
@@ -81,44 +54,15 @@ public class ParameterItemService implements ParameterItemRepository {
         }
     }
 
-    @Override
-    public ParameterItem findByUuid(String s) {
-        return null;
-    }
-
-    /*@Override
-    public List<ParameterItem> findAllParameterFromList(String paramListName) {
-
-        for (Iterator<ParameterList> it = lc.getParameterValuesList().iterator(); it.hasNext(); ){
-            ParameterList pList = it.next();
-            System.out.println(pList.getName());
-            if ((pList.getName()).equals(paramListName)) {
-                return pList.getParameterItems().stream().collect(Collectors.toList());
-            }
-        }
-        return null;
-    }
 
     @Override
-    public List<ParameterItem> findAllParameterFromList(Long idParameterList) {
-
-        for (Iterator<ParameterList> it = lc.getParameterValuesList().iterator(); it.hasNext(); ){
-            ParameterList pList = it.next();
-            if ((pList.getId()).equals(idParameterList)) {
-                return pList.getParameterItems().stream().collect(Collectors.toList());
-            }
-        }
-        return null;
-    }*/
-
-    @Override
-    public ParameterItem getParameterFromListByName(String listName, String parameterKey) {
+    public ParameterItem getParameterFromList(Long listId, Long itemId) {
 
         for(ParameterList parameterList : lc.getParameterValuesList()){
-            if(parameterList.getName().equals(listName)){
+            if(parameterList.getId() == listId){
                 for(Iterator<ParameterItem> it = parameterList.getParameterItems().iterator(); it.hasNext();){
                     ParameterItem p = it.next();
-                    if(parameterKey.equals(p.getKey())){
+                    if(p.getId() == itemId){
                         return p;
                     }
                 }
@@ -128,21 +72,7 @@ public class ParameterItemService implements ParameterItemRepository {
     }
 
 
-
     @Override
-    public ParameterItem findById(Long idItem) {
-
-        for(ParameterList parameterList : lc.getParameterValuesList()){
-
-            for (ParameterItem pItem : parameterList.getParameterItems()){
-                if (pItem.getId()== idItem)
-                    return pItem;
-            }
-        }
-        return null;
-    }
-
-
     public ParameterItem saveParameterToList(Long idList, ParameterItem parameterItem){
 
         for(ParameterList pList : lc.getParameterValuesList()){
@@ -161,6 +91,7 @@ public class ParameterItemService implements ParameterItemRepository {
     }
 
 
+    @Override
     public ParameterItem updateParameterInList (Long idList, ParameterItem parameterItem){
 
         for(ParameterList pList : lc.getParameterValuesList()){
@@ -183,7 +114,30 @@ public class ParameterItemService implements ParameterItemRepository {
     }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
     @Override
     public void remove(ParameterItem parameterItem) {}
+
+    @Override
+    public ParameterItem findById(Long aLong) {
+        return null;
+    }
+
+    @Override
+    public ParameterItem findByUuid(String s) {
+        return null;
+    }
 
 }

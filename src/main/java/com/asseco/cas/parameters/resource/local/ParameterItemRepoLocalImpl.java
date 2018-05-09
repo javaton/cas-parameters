@@ -12,8 +12,6 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import javax.persistence.Query;
-import java.util.List;
 
 
 @Service
@@ -30,40 +28,38 @@ public class ParameterItemRepoLocalImpl<P extends ParameterItem> extends EntityR
     }
 
 
-    /*@Override
-    public List<ParameterItem> findAllParameterFromList(String paramListName) {
-        String query = "select p from PARAMETER_ITEM p where p.ID_PARAMETER_LIST =";
-        System.out.println(query);
-        Query q = getRepository().createQuery(query);
-        return q.getResultList();
-    }
-
-    @Override
-    public List<ParameterItem> findAllParameterFromList(Long idParameterList) {
-        String query = "select p from ParameterItem p where p.parameterList.id=" + idParameterList;
-        System.out.println(query);
-        Query q = getRepository().createQuery(query);
-        return q.getResultList();
-    }*/
-
-
-    public void delete(Long idParameterList, ParameterItem parameterItem) {
-
-    }
-
     @Override
     public void delete(Long idParameterList, Long idParameter) {
 
+        getRepository();
+        em.getTransaction().begin();
+
+
+        String query = "delete from ParameterItem p where p.parameterList.id=" + idParameterList + " and p.id=" + idParameter;
+        System.out.println(query);
+        em.createQuery(query).executeUpdate();
+
+        em.getTransaction().commit();
+        em.close();
+
+
+    /*
+        ParameterItem p = new ParameterItem();
+        p.setId(idParameter);
+        p.setParameterList((ParameterList)em.createQuery("select pl from ParameterList pl where pl.id=" + idParameterList).getSingleResult());
+
+        if(!em.contains(p))
+            p = em.merge(p);
+
+        em.remove(p);*/
     }
 
     @Override
-    public ParameterItem getParameterFromListByName(String listName, String parameterKey) {
-        return null;
-    }
-
-    @Override
-    protected Class<ParameterItem> getEntityClass() {
-        return null;
+    public ParameterItem getParameterFromList(Long listId, Long itemId) {
+        String query = "select p from ParameterItem p where p.parameterList.id=" + listId + " and p.id=" + itemId ;
+        System.out.println(query);
+        ParameterItem parameterItem = (ParameterItem)getRepository().createQuery(query).getSingleResult();
+        return parameterItem;
     }
 
 
@@ -80,7 +76,7 @@ public class ParameterItemRepoLocalImpl<P extends ParameterItem> extends EntityR
 
                 ParameterList p = (ParameterList)em.createQuery("select pl from ParameterList pl where pl.id=" + idList).getSingleResult();
                 parameterItem.setParameterList(p);
-                System.out.println(p.getName() + "    -------------------    " + p.getId() + "  --------------- " + parameterItem.getParameterList().getId());
+
 
                 System.out.println("Store new " + parameterItem.getId());
                 this.em.persist(parameterItem);
@@ -94,15 +90,29 @@ public class ParameterItemRepoLocalImpl<P extends ParameterItem> extends EntityR
 
             em.getTransaction().commit();
 
-            //this.em.close();
             return parameterItem;
         }
     }
 
+
+    //Kako srediti ovo, da li je merge dovoljan
     @Override
     public ParameterItem updateParameterInList(Long idList, ParameterItem parameterItem) {
         return null;
     }
 
+
+
+
+
+
+
+
+
+
+    @Override
+    protected Class<ParameterItem> getEntityClass() {
+        return null;
+    }
 
 }
