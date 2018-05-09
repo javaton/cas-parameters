@@ -75,6 +75,11 @@
             <version>2.5.1</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
 
         <!-- https://mvnrepository.com/artifact/com.oracle/ojdbc14 -->
         <dependency>
