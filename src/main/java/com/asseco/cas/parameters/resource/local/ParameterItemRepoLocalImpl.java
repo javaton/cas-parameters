@@ -115,6 +115,7 @@ public class ParameterItemRepoLocalImpl<P extends ParameterItem> extends EntityR
                 pItem.setKey(parameterItem.getKey());
                 pItem.setValue(parameterItem.getValue());
                 pItem.setDescription(parameterItem.getDescription());
+                pItem.setVersion(parameterItem.getVersion());
 
                 System.out.println("Store new " + parameterItem.getId());
                 this.em.merge(pItem);

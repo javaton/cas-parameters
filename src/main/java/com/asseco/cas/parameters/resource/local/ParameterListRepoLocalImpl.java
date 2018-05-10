@@ -93,6 +93,7 @@ public class ParameterListRepoLocalImpl extends EntityRepositoryImpl<ParameterLi
                 p.setName(entity.getName());
                 p.setParameterItems(entity.getParameterItems());
                 p.setStateCode(entity.getStateCode());
+                p.setVersion(entity.getVersion());
 
                 System.out.println("Store new " + entity.getId());
                 this.em.merge(p);
