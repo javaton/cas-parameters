@@ -77,32 +77,36 @@ public class ParameterListRepoLocalImpl extends EntityRepositoryImpl<ParameterLi
     }
 
 
-    //Videti da li je merge is save-a dovoljan
+
     @Override
     public ParameterList update(ParameterList entity) {
-        /*getRepository();
+        getRepository();
+
         if(entity == null) {
             return null;
         } else {
             em.getTransaction().begin();
 
-            if(entity.getId() == null) {
+            if(!(entity.getId() == null)) {
+
+                ParameterList p = (ParameterList) em.createQuery("select p from ParameterList p where p.id=" + entity.getId()).getSingleResult();
+                p.setName(entity.getName());
+                p.setParameterItems(entity.getParameterItems());
+                p.setStateCode(entity.getStateCode());
 
                 System.out.println("Store new " + entity.getId());
-                this.em.persist(entity);
+                this.em.merge(p);
                 System.out.println("After persist new " + entity.getId());
 
             } else {
-                entity = this.em.merge(entity);
                 em.flush();
-
+                return null;
             }
             em.getTransaction().commit();
 
             return entity;
-        }*/
+        }
 
-        return null;
     }
 
 

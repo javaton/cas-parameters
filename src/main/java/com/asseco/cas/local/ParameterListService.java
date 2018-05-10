@@ -27,6 +27,23 @@ public class ParameterListService implements ParameterListRepository {
     }
 
     @Override
+    public ParameterList store(ParameterList parameterList) {
+        boolean check = true;
+        for(ParameterList p : lc.getParameterValuesList()){
+            if (p.getId().equals(parameterList.getId()))
+                check = false;
+        }
+
+        if(check) {
+            try {
+                lc.getParameterValuesList().add(parameterList);
+                return parameterList;
+            } catch (Exception e){return null;}
+        }
+        return null;
+    }
+
+    @Override
     public List<ParameterList> findAll() {
 
         if(lc.getParameterValuesList()!=null)
@@ -50,23 +67,6 @@ public class ParameterListService implements ParameterListRepository {
             } catch (NoSuchElementException e) {
                 return null;
             }
-        }
-        return null;
-    }
-
-    @Override
-    public ParameterList store(ParameterList parameterList) {
-        boolean check = true;
-        for(ParameterList p : lc.getParameterValuesList()){
-            if (p.getId().equals(parameterList.getId()))
-                check = false;
-        }
-
-        if(check) {
-            try {
-                lc.getParameterValuesList().add(parameterList);
-                return parameterList;
-            } catch (Exception e){return null;}
         }
         return null;
     }

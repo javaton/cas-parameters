@@ -9,12 +9,12 @@ import com.asseco.cas.parameters.domain.SystemParameterList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
-
 
 @ComponentScan
 @RestController
@@ -64,7 +64,7 @@ public class ParameterController {
 
 
     //TODO Potrebno je napraviti razliku izmedju System i ApplicationParameterList, jer implementacija samo ParameterLista ne moze da se mapira iz JSON-a
-    @RequestMapping(value = "/parameter-list", method = RequestMethod.POST,  consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/parameter-lists", method = RequestMethod.POST,  consumes = MediaType.APPLICATION_JSON_VALUE)
     public ParameterList addParameterList(@RequestBody SystemParameterList parameterList, HttpServletResponse response){
         ParameterList list = parameterListFacadeImpl.store(parameterList);
         if (!(list==null)){
@@ -110,7 +110,7 @@ public class ParameterController {
     }
 
 
-    @RequestMapping(value = "/parameter-item/{list}/{idParameter}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/parameter-lists/{list}/{idParameter}", method = RequestMethod.DELETE)
     public void delete(@PathVariable(value = "list")Long idParameterList, @PathVariable(value = "idParameter")Long idParameter, HttpServletResponse response){
         response.setStatus(204);
         parameterItemFacadeImpl.delete(idParameterList, idParameter);

@@ -15,7 +15,20 @@ public abstract class ParameterList extends BaseEntity {
 
     private static final long serialVersionUID = -4966954954652370907L;
 
-    public enum ParameterListEnum{INITIAL, ACTIVE, ARCHIVED};
+    public enum ParameterListEnum{
+        INITIAL (0),
+        ACTIVE (1),
+        ARCHIVED (2);
+
+        private int value;
+        ParameterListEnum(int value){
+            this.value=value;
+        }
+
+        public int getValue(){
+            return value;
+        }
+    }
 
     @Column(name="PARAMETER_NAME",unique=true, length=300)
     private String name;

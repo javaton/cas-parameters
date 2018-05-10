@@ -18,18 +18,21 @@ public class CORSFilter extends GenericFilterBean implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
-        httpResponse.setHeader("Access-Control-Allow-Origin","*");
-        httpResponse.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-        httpResponse.setHeader("Access-Control-Max-Age", "3600");
-
-        httpResponse.setHeader("Access-Control-Allow-Headers", "*");
-        /*httpResponse.setHeader("Access-Control-Allow-Credentials", "false");
-        */
 
 
-        chain.doFilter(request, response);
+        httpResponse.setHeader("Access-Control-Allow-Headers", "Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, application/octet-stream, Content-Disposition, Accept-Encoding");
+        httpResponse.setHeader("Access-Control-Allow-Origin", "*");
+        httpResponse.setHeader("Access-Control-Allow-Headers", "origin, content-type, accept, authorization");
+        httpResponse.setHeader("Access-Control-Allow-Credentials", "true");
+        httpResponse.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD");
+        httpResponse.setHeader("Access-Control-Max-Age", "1209600");
+
+        chain.doFilter(request, httpResponse);
 
     }
+
+
+
 
     @Override
     public boolean isLoggable(LogRecord record) {
