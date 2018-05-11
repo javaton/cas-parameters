@@ -9,9 +9,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import javax.persistence.*;
 
 
 @Service
@@ -56,9 +54,14 @@ public class ParameterItemRepoLocalImpl<P extends ParameterItem> extends EntityR
 
     @Override
     public ParameterItem getParameterFromList(Long listId, Long itemId) {
+        ParameterItem parameterItem = null;
+
         String query = "select p from ParameterItem p where p.parameterList.id=" + listId + " and p.id=" + itemId ;
         System.out.println(query);
-        ParameterItem parameterItem = (ParameterItem)getRepository().createQuery(query).getSingleResult();
+        try{
+            parameterItem = (ParameterItem)getRepository().createQuery(query).getSingleResult();
+        } catch (NoResultException e){e.getMessage();}
+
         return parameterItem;
     }
 
@@ -127,7 +130,13 @@ public class ParameterItemRepoLocalImpl<P extends ParameterItem> extends EntityR
 
             }
 
-            em.getTransaction().commit();
+            try {
+                em.flush();
+                em.getTransaction().commit();
+            } catch (OptimisticLockException e){
+                e.getMessage();
+                return null;
+            }
 
             return parameterItem;
         }
