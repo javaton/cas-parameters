@@ -2,7 +2,6 @@ package com.asseco.cas.parameters.dao;
 
 import com.asseco.cas.interfaces.ParameterListRepository;
 import com.asseco.cas.parameters.domain.ApplicationParameterList;
-import com.asseco.cas.parameters.domain.ParameterItem;
 import com.asseco.cas.parameters.domain.ParameterList;
 import com.asseco.cas.parameters.domain.SystemParameterList;
 import com.asseco.cass.persist.EntityRepositoryImpl;
@@ -10,7 +9,6 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 
