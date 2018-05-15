@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 //@RunWith(SpringRunner.class)
 //@ActiveProfiles("local")
 //@WebMvcTest(ParameterItemController.class)
-public class ParameterItemControllerTest {
+public class ParameterItemControllerLocalTest {
 
 //
 //    @Autowired

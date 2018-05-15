@@ -116,6 +116,7 @@ public class ParameterItemRepoLocalImpl<P extends ParameterItem> extends EntityR
             try {
                 em.flush();
                 em.getTransaction().commit();
+                //em.close();
             } catch (OptimisticLockException e){
                 e.getMessage();
                 return null;

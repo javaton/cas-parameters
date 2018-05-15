@@ -104,7 +104,9 @@ public class ParameterListRepoLocalImpl extends EntityRepositoryImpl<ParameterLi
                 }
                 if (!(p == null)) {
                     p.setName(entity.getName());
-                    p.setParameterItems(entity.getParameterItems());
+                    //TODO ovo moze ako se svaki put budu prosledjivali svi Item-i
+                    //p.setParameterItems(entity.getParameterItems());
+
                     p.setStateCode(entity.getStateCode());
                     p.setVersion(entity.getVersion());
 
