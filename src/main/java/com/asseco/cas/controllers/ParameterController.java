@@ -148,6 +148,7 @@ public class ParameterController {
 
     @RequestMapping(value = "/parameter-lists/{idList}", method = RequestMethod.DELETE,  consumes = MediaType.APPLICATION_JSON_VALUE)
     public void deleteList(@PathVariable (value = "idList")Long idList, HttpServletResponse response){
+        response.setStatus(204);
         parameterListFacadeImpl.remove(idList);
     }
 

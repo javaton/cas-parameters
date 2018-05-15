@@ -181,7 +181,7 @@ public class ParameterControllerResourceLocalTest {
         SystemParameterList tmp = (SystemParameterList) controller.addParameterList(p, httpServletResponse);
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders.delete("/parameter-lists/" + tmp.getId()).contentType(MediaType.APPLICATION_JSON);;
-        MvcResult result = mockMvc.perform(requestBuilder).andExpect(status().isOk()).andReturn();
+        MvcResult result = mockMvc.perform(requestBuilder).andExpect(status().isNoContent()).andReturn();
 
         SystemParameterList assertList = null;
 
@@ -194,7 +194,23 @@ public class ParameterControllerResourceLocalTest {
 
     @Test
     public void deleteTest() throws Exception {
+        MockHttpServletResponse httpServletResponse = new MockHttpServletResponse();
+        ParameterItem p = new ParameterItem();
+        p.setKey("deleteTestKey" + Math.random()*500);
+        p.setValue("deleteTestValue" + Math.random()*500);
+        p.setDescription("deleteTestDescription" + Math.random()*500);
+        ParameterItem tmp = (ParameterItem) controller.addParameterToList(listId, p, httpServletResponse);
 
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.delete("/parameter-lists/"+ listId + "/" + tmp.getId()).contentType(MediaType.APPLICATION_JSON);;
+        MvcResult result = mockMvc.perform(requestBuilder).andExpect(status().isNoContent()).andReturn();
+
+        ParameterItem assertList = null;
+
+        try {
+            assertList = (ParameterItem) controller.getItemFromList(String.valueOf(listId), String.valueOf(tmp.getId()), httpServletResponse);
+        } catch (Exception e){e.getMessage();}
+
+        Assert.assertNull(assertList);
     }
 
 
