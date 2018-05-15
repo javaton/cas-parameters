@@ -18,42 +18,25 @@ import javax.persistence.*;
 @Profile("resource-local")
 public class ParameterItemRepoLocalImpl<P extends ParameterItem> extends EntityRepositoryImpl<ParameterItem> implements ParameterItemRepository {
 
-    EntityManagerFactory emf = Persistence.createEntityManagerFactory("parametersPU");
 
     private EntityManager getRepository(){
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("parametersPU");
         em = emf.createEntityManager();
         return em;
     }
 
 
-    @Override
-    public void delete(Long idParameterList, Long idParameter) {
-
-        getRepository();
-        em.getTransaction().begin();
-
-
-        String query = "delete from ParameterItem p where p.parameterList.id=" + idParameterList + " and p.id=" + idParameter;
-        System.out.println(query);
-        em.createQuery(query).executeUpdate();
-
-        em.getTransaction().commit();
-        em.close();
-
-
-    /*
-        ParameterItem p = new ParameterItem();
-        p.setId(idParameter);
-        p.setParameterList((ParameterList)em.createQuery("select pl from ParameterList pl where pl.id=" + idParameterList).getSingleResult());
-
-        if(!em.contains(p))
-            p = em.merge(p);
-
-        em.remove(p);*/
+    public EntityManager getEntityManager(){
+        if(em==null){
+            getRepository();
+        }
+        return em;
     }
+
 
     @Override
     public ParameterItem getParameterFromList(Long listId, Long itemId) {
+        getEntityManager();
         ParameterItem parameterItem = null;
 
         String query = "select p from ParameterItem p where p.parameterList.id=" + listId + " and p.id=" + itemId ;
@@ -68,7 +51,7 @@ public class ParameterItemRepoLocalImpl<P extends ParameterItem> extends EntityR
 
     @Override
     public ParameterItem saveParameterToList(Long idList, ParameterItem parameterItem) {
-        getRepository();
+        getEntityManager();
 
         if(idList == null) {
             return null;
@@ -101,7 +84,7 @@ public class ParameterItemRepoLocalImpl<P extends ParameterItem> extends EntityR
     @Override
     public ParameterItem updateParameterInList(Long idList, ParameterItem parameterItem) {
 
-        getRepository();
+        getEntityManager();
 
         if(idList == null) {
             return null;
@@ -140,6 +123,24 @@ public class ParameterItemRepoLocalImpl<P extends ParameterItem> extends EntityR
 
             return parameterItem;
         }
+    }
+
+
+    @Override
+    public void delete(Long idParameterList, Long idParameter) {
+
+        getEntityManager();
+        em.getTransaction().begin();
+
+
+        String query = "delete from ParameterItem p where p.parameterList.id=" + idParameterList + " and p.id=" + idParameter;
+        System.out.println(query);
+        em.createQuery(query).executeUpdate();
+
+        em.getTransaction().commit();
+        em.close();
+
+
     }
 
 

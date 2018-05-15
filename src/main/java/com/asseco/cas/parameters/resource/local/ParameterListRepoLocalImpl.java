@@ -20,17 +20,23 @@ import java.util.List;
 @Profile("resource-local")
 public class ParameterListRepoLocalImpl extends EntityRepositoryImpl<ParameterList> implements ParameterListRepository {
 
-    EntityManagerFactory emf = Persistence.createEntityManagerFactory("parametersPU");
-
     private EntityManager getRepository(){
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("parametersPU");
         em = emf.createEntityManager();
+        return em;
+    }
+
+    public EntityManager getEntityManager(){
+        if(em==null){
+            getRepository();
+        }
         return em;
     }
 
 
     @Override
     public ParameterList store(ParameterList entity) {
-        getRepository();
+        getEntityManager();
         if(entity == null) {
             return null;
         } else {
@@ -49,7 +55,6 @@ public class ParameterListRepoLocalImpl extends EntityRepositoryImpl<ParameterLi
             }
             em.getTransaction().commit();
 
-            //this.entityManager.close();
             return entity;
         }
     }
@@ -97,15 +102,15 @@ public class ParameterListRepoLocalImpl extends EntityRepositoryImpl<ParameterLi
                     e.getMessage();
                     return null;
                 }
-                    if (!(p == null)) {
-                        p.setName(entity.getName());
-                        p.setParameterItems(entity.getParameterItems());
-                        p.setStateCode(entity.getStateCode());
-                        p.setVersion(entity.getVersion());
+                if (!(p == null)) {
+                    p.setName(entity.getName());
+                    p.setParameterItems(entity.getParameterItems());
+                    p.setStateCode(entity.getStateCode());
+                    p.setVersion(entity.getVersion());
 
-                        this.em.merge(p);
+                    this.em.merge(p);
 
-                    }
+                }
 
             } else {
                 em.flush();

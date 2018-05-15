@@ -1,30 +1,34 @@
 package com.asseco.cas;
 
-
-import com.asseco.cas.parameters.domain.ParameterItem;
 import com.asseco.cas.parameters.domain.ParameterList;
 import com.asseco.cas.parameters.domain.SystemParameterList;
 import com.asseco.cas.parameters.resource.local.ParameterListRepoLocalImpl;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 
+
+import javax.persistence.EntityManager;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 @RunWith(SpringRunner.class)
 @ComponentScan
 @EnableAutoConfiguration
+@DataJpaTest
+@EnableTransactionManagement
+@Transactional
 @ActiveProfiles("resource-local")
 public class ParameterListRepoLocalImplTest {
 
@@ -49,11 +53,6 @@ public class ParameterListRepoLocalImplTest {
         System.out.println("____________________________________________________________");
     }
 
-    @After
-    public void tearDown(){
-        parameterListRepoLocal.remove(parameterList.getId());
-    }
-
 
     @Test
     public void findAllTest(){
@@ -64,44 +63,85 @@ public class ParameterListRepoLocalImplTest {
 
 
     @Test
-    public void storeParameterList(){
-        ParameterList list = parameterListRepoLocal.store(parameterList);
+    public void storeParameterListTest(){
+        EntityManager em = parameterListRepoLocal.getEntityManager();
 
-        System.out.println("\n \n \n \n \n \n \n \n \n \n \n \n \n");
+        ParameterList list = parameterListRepoLocal.store(parameterList);
         System.out.println("UUID: " + list.getUuid());
         System.out.println("Id: " + list.getId());
-        System.out.println("Entity created "  + list.getEntityCreated());
-        System.out.println("\n \n \n \n \n \n \n \n \n \n \n \n \n");
+
         Assert.assertNotNull(list.getId());
         Assert.assertNotNull(list.getVersion());
+
+        em.getTransaction().begin();
+        em.remove(list);
+        em.getTransaction().commit();
+
+    }
+
+
+    //TODO Dodati data je nepromenjen posle testa, ali version se i dalje menja zbog baze
+    @Test
+    public void updateParameterListTest(){
+
+        EntityManager em = parameterListRepoLocal.getEntityManager();
+
+        ParameterList p = parameterListRepoLocal.findById((long)383);
+        String startName = p.getName();
+        System.out.println("p.id = " + p.getId());
+        System.out.println("p.version = " + p.getVersion());
+
+        p.setName("Test1" + Math.random()*9000);
+        p.setVersion(p.getVersion());
+
+        ParameterList testList = parameterListRepoLocal.update(p);
+        String afterName = testList.getName();
+
+        Assert.assertNotNull(testList.getId());
+        Assert.assertNotNull(testList.getVersion());
+        Assert.assertNotEquals(startName, afterName);
+
+        p.setVersion(parameterListRepoLocal.findById((long)383).getVersion());
+        p.setName(startName);
+
+
+        em.getTransaction().begin();
+        em.merge(p);
+        em.getTransaction().commit();
     }
 
 
     @Test
-    public void updateParameterList(){
+    public void removeTest(){
+        EntityManager em = parameterListRepoLocal.getEntityManager();
 
-        ParameterList p = parameterListRepoLocal.findById((long)543);
-        System.out.println("\n \n \n \n \n \n \n \n \n \n \n \n \n");
-        System.out.println("p.id = " + p.getId());
-        System.out.println("p.version = " + p.getVersion());
-        System.out.println("\n \n \n \n \n \n \n \n \n \n \n \n \n");
+        ParameterList pList = new SystemParameterList();
+        pList.setName("Test1" + Math.random()*9000);
+        pList.setStateCode(ParameterList.ParameterListEnum.ARCHIVED);
 
-        Set<ParameterItem> set = null;
+        ParameterList  test = parameterListRepoLocal.store(pList);
 
-        parameterList.setId(p.getId());
-        parameterList.setVersion(p.getVersion());
-        parameterList.setName("Test1" + Math.random()*9000);
-        parameterList.setStateCode(ParameterList.ParameterListEnum.ARCHIVED);
-        //parameterList.setParameterItems(set);
 
-        ParameterList pList = parameterListRepoLocal.update(parameterList);
-        System.out.println("\n \n \n \n \n \n \n \n \n \n \n \n \n");
-        System.out.println("UUID: " + pList.getUuid());
-        System.out.println("Id: " + pList.getId());
-        System.out.println("Entity created "  + pList.getEntityCreated());
-        System.out.println("\n \n \n \n \n \n \n \n \n \n \n \n \n");
-        Assert.assertNotNull(pList.getId());
-        Assert.assertNotNull(pList.getVersion());
+        parameterListRepoLocal.remove(test.getId());
+
+        ParameterList testList = null;
+
+        try {
+            testList = parameterListRepoLocal.findById(test.getId());
+        } catch (NullPointerException e) {
+            e.getMessage();
+
+            Assert.assertNull(testList.getId());
+            Assert.assertNull(testList.getVersion());
+        }
+    }
+
+
+    @Test
+    public void findByIdTest(){
+        ParameterList list = parameterListRepoLocal.findById((long)383);
+        Assert.assertNotNull(list.getId());
+        Assert.assertNotNull(list.getVersion());
     }
 
 }
