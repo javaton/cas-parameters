@@ -32,7 +32,7 @@ public abstract class ParameterList extends BaseEntity {
 
     @Column(name="PARAMETER_NAME",unique=true, length=300)
     private String name;
-    @OneToMany(cascade={CascadeType.ALL},fetch=FetchType.EAGER, mappedBy="parameterList")
+    @OneToMany(fetch=FetchType.EAGER, mappedBy="parameterList", orphanRemoval=true)
     protected Set<ParameterItem> parameterItems = new HashSet<ParameterItem>();
     @Column(name="STATE_CODE", length=10)
     @Enumerated(EnumType.STRING)

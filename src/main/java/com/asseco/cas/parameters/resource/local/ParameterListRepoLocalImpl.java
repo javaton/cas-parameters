@@ -1,151 +1,104 @@
 package com.asseco.cas.parameters.resource.local;
 
+import com.asseco.cas.interfaces.ParameterListRepo;
 import com.asseco.cas.interfaces.ParameterListRepository;
 import com.asseco.cas.parameters.domain.ApplicationParameterList;
 import com.asseco.cas.parameters.domain.ParameterList;
 import com.asseco.cas.parameters.domain.SystemParameterList;
 import com.asseco.cass.persist.EntityRepositoryImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.*;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
 @EnableAutoConfiguration
-@Repository
 @Profile("resource-local")
 public class ParameterListRepoLocalImpl extends EntityRepositoryImpl<ParameterList> implements ParameterListRepository {
 
-    private EntityManager getRepository(){
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("parametersPU");
-        em = emf.createEntityManager();
-        return em;
-    }
-
-    public EntityManager getEntityManager(){
-        if(em==null){
-            getRepository();
-        }
-        return em;
-    }
-
+    @Autowired
+    private ParameterListRepo parameterListRepo;
 
     @Override
+    @Transactional
     public ParameterList store(ParameterList entity) {
-        getEntityManager();
-        if(entity == null) {
+
+        ParameterList list = null;
+        try {
+            list = parameterListRepo.save(entity);
+        } catch(Exception e){
+            System.out.println(e.getMessage());
             return null;
-        } else {
-            em.getTransaction().begin();
-
-            if(entity.getId() == null) {
-
-                System.out.println("Store new " + entity.getId());
-                this.em.persist(entity);
-                System.out.println("After persist new " + entity.getId());
-
-            } else {
-                entity = this.em.merge(entity);
-                em.flush();
-
-            }
-            em.getTransaction().commit();
-
-            return entity;
         }
+
+        if (list==null)
+            return null;
+        return list;
+
     }
 
 
     @Override
     public List<ParameterList> findAll() {
-        String queryString =  " select pl from ParameterList pl " ;
-        System.out.println("Status " + getRepository().isOpen());
-        Query q = getRepository().createQuery(queryString);
-        return q.getResultList();
+        return parameterListRepo.findAll();
     }
 
 
     @Override
     public ParameterList findById(Long idParameterList){
+        Optional<ParameterList> found = parameterListRepo.findById(idParameterList);
 
-        ParameterList parameterList = null;
-        String query = "select p from ParameterList p where p.id=" + idParameterList;
-        System.out.println(query);
-        try {
-            parameterList = (ParameterList)getRepository().createQuery(query).getSingleResult();
-        } catch (NoResultException e){e.getMessage();}
+        if(found.isPresent())
+            return found.get();
 
-        return parameterList;
+        return null;
     }
 
 
     @Override
     public ParameterList update(ParameterList entity) {
-        getRepository();
 
-        if (entity == null) {
-            return null;
-        } else {
-            em.getTransaction().begin();
-
-            ParameterList p = null;
-
-            if (!(entity.getId() == null)) {
-
-                try {
-                    p = (ParameterList) em.createQuery("select p from ParameterList p where p.id=" + entity.getId()).getSingleResult();
-                } catch (Exception e) {
-                    e.getMessage();
-                    return null;
-                }
-                if (!(p == null)) {
-                    p.setName(entity.getName());
-                    //TODO ovo moze ako se svaki put budu prosledjivali svi Item-i
-                    //p.setParameterItems(entity.getParameterItems());
-
-                    p.setStateCode(entity.getStateCode());
-                    p.setVersion(entity.getVersion());
-
-                    this.em.merge(p);
-
-                }
-
-            } else {
-                em.flush();
-                return null;
-            }
-
-        }
+        ParameterList list = null;
 
         try {
-            em.flush();
-            em.getTransaction().commit();
-        } catch (OptimisticLockException e){
-            e.getMessage();
+            list = parameterListRepo.findById(entity.getId()).get();
+        } catch(Exception e){
+            System.out.println(e.getMessage());
             return null;
         }
 
-        return entity;
+        if (list==null) {
+            return null;
+        } else {
+            //TODO jos uvek nije stavljeno da update-uje i parameterItems
+            list.setStateCode(entity.getStateCode());
+            list.setName(entity.getName());
+
+            parameterListRepo.save(list);
+            return parameterListRepo.findById(entity.getId()).get();
+        }
+
     }
-
-
 
     @Override
     public void remove(Long idList) {
-        getRepository();
-        em.getTransaction().begin();
+        ParameterList list = null;
 
-        String query = "delete from ParameterList p where p.id=" + idList;
-        System.out.println(query);
-        em.createQuery(query).executeUpdate();
+        try {
+            list = parameterListRepo.findById(idList).get();
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+        }
 
-        em.getTransaction().commit();
-        em.close();
-
+        if (!(list==null))
+            parameterListRepo.delete(list);
     }
 
 
@@ -168,9 +121,7 @@ public class ParameterListRepoLocalImpl extends EntityRepositoryImpl<ParameterLi
 
     @Override
     public List<ParameterList> findByName(String parameterListName) {
-        String queryString =  " select * from PARAMETER_LIST pl where pl.PARAMETER_NAME='"+parameterListName+"'" ;
-        Query q = getRepository().createQuery(queryString);
-        return q.getResultList();
+        return null;
     }
 
 
