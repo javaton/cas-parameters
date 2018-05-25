@@ -2,15 +2,14 @@ package com.asseco.cas.controllers;
 
 
 import com.asseco.cas.facade.ParameterItemFacadeImpl;
-import com.asseco.cas.facade.ParameterListFacadeImpl;
+import com.asseco.cas.interfaces.ParameterItemFacade;
+import com.asseco.cas.interfaces.ParameterListFacade;
 import com.asseco.cas.parameters.domain.ParameterItem;
 import com.asseco.cas.parameters.domain.ParameterList;
 import com.asseco.cas.parameters.domain.SystemParameterList;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,19 +22,19 @@ import java.util.List;
 public class ParameterController {
 
 
-    private ParameterListFacadeImpl parameterListFacadeImpl;
-    private ParameterItemFacadeImpl parameterItemFacadeImpl;
+    private ParameterListFacade parameterListFacade;
+    private ParameterItemFacade parameterItemFacade;
 
     @Autowired
-    public ParameterController(ParameterListFacadeImpl parameterListFacadeImpl, ParameterItemFacadeImpl parameterItemFacadeImpl){
-        this.parameterListFacadeImpl = parameterListFacadeImpl;
-        this.parameterItemFacadeImpl = parameterItemFacadeImpl;
+    public ParameterController(ParameterListFacade parameterListFacade, ParameterItemFacade parameterItemFacade){
+        this.parameterListFacade = parameterListFacade;
+        this.parameterItemFacade = parameterItemFacade;
     }
 
 
     @RequestMapping(value = "/parameter-lists", method = RequestMethod.GET)
     public List<ParameterList> getParameterLists(HttpServletResponse response){
-        List<ParameterList> list  = parameterListFacadeImpl.findAll();
+        List<ParameterList> list  = parameterListFacade.findAll();
         if (!list.isEmpty()){
             return list;
         } else {response.setStatus(400); return null;}
@@ -52,7 +51,7 @@ public class ParameterController {
         }
 
 
-        ParameterList list =  parameterListFacadeImpl.findById(id);
+        ParameterList list =  parameterListFacade.findById(id);
         if (!(list==null)){
             response.setStatus(200);
             return list;
@@ -76,7 +75,7 @@ public class ParameterController {
             return "List and Item ID should be a numerical value";
         }
 
-        ParameterItem p = parameterItemFacadeImpl.getParameterFromList(listId, itemId);
+        ParameterItem p = parameterItemFacade.getParameterFromList(listId, itemId);
         if (p!=null) {
             response.setStatus(200);
             return p;
@@ -96,7 +95,7 @@ public class ParameterController {
     //TODO Potrebno je napraviti razliku izmedju System i ApplicationParameterList, jer implementacija samo ParameterLista ne moze da se mapira iz JSON-a
     @RequestMapping(value = "/parameter-lists", method = RequestMethod.POST,  consumes = MediaType.APPLICATION_JSON_VALUE)
     public Object addParameterList(@RequestBody SystemParameterList parameterList, HttpServletResponse response){
-        ParameterList list = parameterListFacadeImpl.store(parameterList);
+        ParameterList list = parameterListFacade.store(parameterList);
         if (!(list==null)){
             response.setStatus(201);
             return getParameterList(parameterList.getId().toString(), response);
@@ -109,7 +108,7 @@ public class ParameterController {
 
     @RequestMapping(value = "/parameter-lists/{idList}", method = RequestMethod.POST,  consumes = MediaType.APPLICATION_JSON_VALUE)
     public Object addParameterToList(@PathVariable(value = "idList") Long idList, @RequestBody ParameterItem parameterItem, HttpServletResponse response){
-        ParameterItem pItem = parameterItemFacadeImpl.saveParameterToList(idList, parameterItem);
+        ParameterItem pItem = parameterItemFacade.saveParameterToList(idList, parameterItem);
         if (!(pItem==null)){
             response.setStatus(201);
             return getItemFromList(idList.toString(), parameterItem.getId().toString(), response);
@@ -122,7 +121,7 @@ public class ParameterController {
 
     @RequestMapping(value = "/parameter-lists", method = RequestMethod.PUT,  consumes = MediaType.APPLICATION_JSON_VALUE)
     public Object editList(@RequestBody SystemParameterList parameterList, HttpServletResponse response){
-        ParameterList list =  parameterListFacadeImpl.update(parameterList);
+        ParameterList list =  parameterListFacade.update(parameterList);
         if (!(list==null)){
             response.setStatus(200);
             return getParameterList(parameterList.getId().toString(), response);
@@ -134,7 +133,7 @@ public class ParameterController {
 
     @RequestMapping(value = "/parameter-lists/{idList}", method = RequestMethod.PUT,  consumes = MediaType.APPLICATION_JSON_VALUE)
     public Object editParameterInList(@PathVariable(value = "idList") Long idList, @RequestBody ParameterItem parameterItem, HttpServletResponse response){
-        ParameterItem pItem = parameterItemFacadeImpl.updateParameterInList(idList, parameterItem);
+        ParameterItem pItem = parameterItemFacade.updateParameterInList(idList, parameterItem);
         if (!(pItem==null)){
             response.setStatus(200);
             return getItemFromList(idList.toString(), parameterItem.getId().toString(), response);
@@ -149,14 +148,14 @@ public class ParameterController {
     @RequestMapping(value = "/parameter-lists/{idList}", method = RequestMethod.DELETE,  consumes = MediaType.APPLICATION_JSON_VALUE)
     public void deleteList(@PathVariable (value = "idList")Long idList, HttpServletResponse response){
         response.setStatus(204);
-        parameterListFacadeImpl.remove(idList);
+        parameterListFacade.remove(idList);
     }
 
 
     @RequestMapping(value = "/parameter-lists/{list}/{idParameter}", method = RequestMethod.DELETE)
     public void delete(@PathVariable(value = "list")Long idParameterList, @PathVariable(value = "idParameter")Long idParameter, HttpServletResponse response){
         response.setStatus(204);
-        parameterItemFacadeImpl.delete(idParameterList, idParameter);
+        parameterItemFacade.delete(idParameterList, idParameter);
     }
 
 }

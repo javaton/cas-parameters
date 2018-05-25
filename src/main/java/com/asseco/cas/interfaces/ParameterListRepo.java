@@ -6,7 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ParameterListRepo extends JpaRepository<ParameterList, Long> {
-
-
 }
 

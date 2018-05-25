@@ -5,10 +5,12 @@ import com.asseco.cas.parameters.domain.ParameterItem;
 import com.asseco.cas.parameters.domain.ParameterList;
 import com.asseco.cas.parameters.domain.SystemParameterList;
 import com.asseco.cass.persist.EntityRepository;
+import org.springframework.stereotype.Repository;
 
 
 import java.util.List;
 
+@Repository
 public interface ParameterListRepository extends EntityRepository<ParameterList> {
 
 

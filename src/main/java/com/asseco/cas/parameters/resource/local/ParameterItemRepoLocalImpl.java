@@ -18,7 +18,6 @@ import javax.persistence.*;
 
 @Service
 @EnableAutoConfiguration
-@Repository
 @Profile("resource-local")
 public class ParameterItemRepoLocalImpl<P extends ParameterItem> extends EntityRepositoryImpl<ParameterItem> implements ParameterItemRepository {
 

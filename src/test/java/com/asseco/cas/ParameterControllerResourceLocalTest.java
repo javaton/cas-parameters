@@ -12,7 +12,9 @@ import org.junit.runner.RunWith;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -26,12 +28,15 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @ActiveProfiles("resource-local")
-@WebMvcTest(ParameterController.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 public class ParameterControllerResourceLocalTest {
 
 
@@ -41,14 +46,16 @@ public class ParameterControllerResourceLocalTest {
     @Autowired
     ParameterController controller;
 
-    private Long listId = 152L;
-    private Long itemId = 532L;
+    private Long listId = 3L;
+    private Long itemId = 7L;
 
     @Test
     public void getParameterListsTest() throws Exception{
         RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/parameter-lists").accept(
                 MediaType.APPLICATION_JSON);
         MvcResult result = mockMvc.perform(requestBuilder).andExpect(status().isOk()).andReturn();
+
+
         /*String expected = "[{\"id\":152}]";
         JSONAssert.assertEquals(expected, result.getResponse().getContentAsString(), JSONCompareMode.LENIENT);
         JSONAssert ne radi kada se ne radi sa JSON objektima, nego sa JSON nizovima kojima se ne zna tacan broj elemenata.
@@ -63,8 +70,10 @@ public class ParameterControllerResourceLocalTest {
                 "/parameter-lists/" + String.valueOf(listId)).accept(
                 MediaType.APPLICATION_JSON);
         MvcResult result = mockMvc.perform(requestBuilder).andExpect(status().isOk()).andReturn();
-        String expected = "{\"id\":152}";
-        JSONAssert.assertEquals(expected, result.getResponse().getContentAsString(), JSONCompareMode.LENIENT);
+
+        ParameterList list = new ObjectMapper().readValue(result.getResponse().getContentAsString(), SystemParameterList.class);
+
+        Assert.assertNotNull(list.getId());
     }
 
 
@@ -74,26 +83,32 @@ public class ParameterControllerResourceLocalTest {
                 "/parameter-lists/" + String.valueOf(listId) + "/" + String.valueOf(itemId)).accept(
                 MediaType.APPLICATION_JSON);
         MvcResult result = mockMvc.perform(requestBuilder).andExpect(status().isOk()).andReturn();
-        String expected = "{\"id\": 532}";
-        JSONAssert.assertEquals(expected, result.getResponse().getContentAsString(), JSONCompareMode.LENIENT);
+
+
+        ParameterItem item = new ObjectMapper().readValue(result.getResponse().getContentAsString(), ParameterItem.class);
+
+        Assert.assertNotNull(item);
     }
 
 
     @Test
     public void addParameterListTest() throws Exception{
         String name= "ControllerTestingName"  + Math.random()*50;
+
         RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/parameter-lists")
                 .accept(MediaType.APPLICATION_JSON).content("{\"name\" : \"" + name +"\", \"stateCode\" : \"INITIAL\"}")
                 .contentType(MediaType.APPLICATION_JSON);
         MvcResult result = mockMvc.perform(requestBuilder).andReturn();
         MockHttpServletResponse response = result.getResponse();
-        String expected = "{\"name\" : \"" + name +"\"}";
-        JSONAssert.assertEquals(expected, result.getResponse().getContentAsString(), JSONCompareMode.LENIENT);
+
         assertEquals(HttpStatus.OK.value(), response.getStatus());
 
         ParameterList p = new ObjectMapper().readValue(result.getResponse().getContentAsString(), SystemParameterList.class);
-        System.out.println("THIS IS THE ID OF THE LIST --> " + p.getId());
         controller.deleteList(p.getId(), response);
+
+        //TODO Ako se menja poruka u controlleru mora da se menja i ovde
+        String message = "No list with that ID";
+        Assert.assertEquals(controller.getParameterList(p.getId().toString(), response), message);
     }
 
 
@@ -110,13 +125,14 @@ public class ParameterControllerResourceLocalTest {
                 .contentType(MediaType.APPLICATION_JSON);
         MvcResult result = mockMvc.perform(requestBuilder).andReturn();
         MockHttpServletResponse response = result.getResponse();
-        String expected = "{\"key\" : \"" + key + "\", \"value\" : \"" + value + "\", \"description\" : \"" + description + "\"}";
-        JSONAssert.assertEquals(expected, result.getResponse().getContentAsString(), JSONCompareMode.LENIENT);
+
         assertEquals(HttpStatus.OK.value(), response.getStatus());
 
         ParameterItem p = new ObjectMapper().readValue(result.getResponse().getContentAsString(), ParameterItem.class);
         controller.delete(listId, p.getId(), response);
+        String message = "No item with given ID";
 
+        Assert.assertEquals(controller.getItemFromList(listId.toString(), p.getId().toString(), response), message);
     }
 
 
@@ -125,23 +141,33 @@ public class ParameterControllerResourceLocalTest {
         String name= "ControllerTestingName"  + Math.random()*50;
         MockHttpServletResponse httpServletResponse = new MockHttpServletResponse();
 
-        String json = new ObjectMapper().writeValueAsString(controller.getParameterList(String.valueOf(listId), httpServletResponse));
+        SystemParameterList testList = new SystemParameterList();
+        testList.setName("FirstWrite" + Math.random()*50);
+        testList.setStateCode(ParameterList.ParameterListEnum.ARCHIVED);
+        controller.addParameterList(testList, httpServletResponse);
 
-        SystemParameterList tmpList = new ObjectMapper().readValue(json, SystemParameterList.class);
+        List<ParameterList> read = controller.getParameterLists(httpServletResponse);
 
-
+        ParameterList tmpList = read.get(read.size()-1);
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders.put("/parameter-lists")
-                .accept(MediaType.APPLICATION_JSON).content("{\"id\" : " + listId + ", \"version\" : "+ tmpList.getVersion() +", \"name\" : \"" + name +"\", \"stateCode\" : \"INITIAL\"}")
+                .accept(MediaType.APPLICATION_JSON).content("{\"id\" : " + tmpList.getId() + ", \"version\" : "+ tmpList.getVersion() +", \"name\" : \"" + name +"\", \"stateCode\" : \"INITIAL\"}")
                 .contentType(MediaType.APPLICATION_JSON);
         MvcResult result = mockMvc.perform(requestBuilder).andReturn();
         MockHttpServletResponse response = result.getResponse();
-        String expected = "{\"id\" : " + listId + ", \"name\" : \"" + name +"\", \"stateCode\" : \"INITIAL\"}";
-        JSONAssert.assertEquals(expected, result.getResponse().getContentAsString(), JSONCompareMode.LENIENT);
+
         assertEquals(HttpStatus.OK.value(), response.getStatus());
 
-        SystemParameterList p = new ObjectMapper().readValue(result.getResponse().getContentAsString(), SystemParameterList.class);
-        controller.editList(p, response);
+        SystemParameterList updated = new ObjectMapper().readValue(result.getResponse().getContentAsString(), SystemParameterList.class);
+
+        Assert.assertEquals(tmpList.getId(), updated.getId());
+        Assert.assertNotEquals(tmpList.getName(), updated.getName());
+
+        controller.deleteList(tmpList.getId(), httpServletResponse);
+        String message = "No list with that ID";
+
+        Assert.assertEquals(controller.getParameterList(tmpList.getId().toString(), response).toString(), message);
+
     }
 
     @Test
@@ -150,67 +176,81 @@ public class ParameterControllerResourceLocalTest {
         String  key = "TestKey" + Math.random()*50;
         String  description = "TestDescription" + Math.random()*50;
 
+        String  valueUpdate = "TestValue" + Math.random()*50;
+        String  keyUpdate = "TestKey" + Math.random()*50;
+        String  descriptionUpdate = "TestDescription" + Math.random()*50;
+
+
         MockHttpServletResponse httpServletResponse = new MockHttpServletResponse();
-        String json = new ObjectMapper().writeValueAsString(controller.getItemFromList(String.valueOf(listId), String.valueOf(itemId), httpServletResponse));
-        ParameterItem tmpItem = new ObjectMapper().readValue(json, ParameterItem.class);
+
+        ParameterItem item = new ParameterItem();
+        item.setValue(value);
+        item.setKey(key);
+        item.setDescription(description);
+
+        ParameterItem tmpItem = (ParameterItem)controller.addParameterToList(listId, item, httpServletResponse);
+
 
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders.put("/parameter-lists/" + listId)
-                .accept(MediaType.APPLICATION_JSON).content("{\"id\" : " + String.valueOf(itemId) + ", \"version\" : "+ tmpItem.getVersion() +", \"key\" : \"" + key +"\", \"value\" : \"" + value + "\", \"description\" : \" "+ description + "\"}")
+                .accept(MediaType.APPLICATION_JSON).content("{\"id\" : " + tmpItem.getId() + ", \"version\" : "+ tmpItem.getVersion() +", \"key\" : \"" + keyUpdate +"\", \"value\" : \"" + valueUpdate
+                        + "\", \"description\" : \" "+ descriptionUpdate + "\"}")
                 .contentType(MediaType.APPLICATION_JSON);
         MvcResult result = mockMvc.perform(requestBuilder).andReturn();
         MockHttpServletResponse response = result.getResponse();
-        String expected =  "{\"id\" : " + String.valueOf(itemId) + ", \"version\" : "+ (tmpItem.getVersion()+1) +", \"key\" : \"" + key +"\", \"value\" : \"" + value + "\"}";
-        JSONAssert.assertEquals(expected, result.getResponse().getContentAsString(), JSONCompareMode.LENIENT);
+
         assertEquals(HttpStatus.OK.value(), response.getStatus());
 
         ParameterItem p = new ObjectMapper().readValue(result.getResponse().getContentAsString(), ParameterItem.class);
-        p.setKey(tmpItem.getKey());
-        p.setValue(tmpItem.getValue());
-        p.setDescription(tmpItem.getDescription());
-        controller.editParameterInList(listId, p, response);
+
+        Assert.assertEquals(tmpItem.getId(), p.getId());
+        Assert.assertNotEquals(tmpItem.getKey(), p.getKey());
+        Assert.assertNotEquals(tmpItem.getValue(), p.getValue());
+
+        controller.delete(listId, tmpItem.getId(), httpServletResponse);
+        String message = "No item with given ID";
+
+        Assert.assertEquals(controller.getItemFromList(listId.toString(), p.getId().toString(), response), message);
     }
 
 
     @Test
     public void deleteListTest() throws Exception{
         MockHttpServletResponse httpServletResponse = new MockHttpServletResponse();
+
         SystemParameterList p = new SystemParameterList();
         p.setName("deleteTest" + Math.random()*500);
         p.setStateCode(ParameterList.ParameterListEnum.INITIAL);
         SystemParameterList tmp = (SystemParameterList) controller.addParameterList(p, httpServletResponse);
 
+        Assert.assertNotNull(tmp);
+
         RequestBuilder requestBuilder = MockMvcRequestBuilders.delete("/parameter-lists/" + tmp.getId()).contentType(MediaType.APPLICATION_JSON);;
         MvcResult result = mockMvc.perform(requestBuilder).andExpect(status().isNoContent()).andReturn();
 
-        SystemParameterList assertList = null;
+        String message = "No list with that ID";
 
-        try {
-            assertList = (SystemParameterList) controller.getParameterList(String.valueOf(tmp.getId()), httpServletResponse);
-        } catch (Exception e){e.getMessage();}
-
-        Assert.assertNull(assertList);
+        Assert.assertEquals(controller.getParameterList(tmp.getId().toString(), httpServletResponse), message);
     }
 
     @Test
     public void deleteTest() throws Exception {
         MockHttpServletResponse httpServletResponse = new MockHttpServletResponse();
+
         ParameterItem p = new ParameterItem();
         p.setKey("deleteTestKey" + Math.random()*500);
         p.setValue("deleteTestValue" + Math.random()*500);
         p.setDescription("deleteTestDescription" + Math.random()*500);
+
         ParameterItem tmp = (ParameterItem) controller.addParameterToList(listId, p, httpServletResponse);
+        Assert.assertNotNull(tmp);
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders.delete("/parameter-lists/"+ listId + "/" + tmp.getId()).contentType(MediaType.APPLICATION_JSON);;
         MvcResult result = mockMvc.perform(requestBuilder).andExpect(status().isNoContent()).andReturn();
 
-        ParameterItem assertList = null;
+        String message = "No item with given ID";
 
-        try {
-            assertList = (ParameterItem) controller.getItemFromList(String.valueOf(listId), String.valueOf(tmp.getId()), httpServletResponse);
-        } catch (Exception e){e.getMessage();}
-
-        Assert.assertNull(assertList);
+        Assert.assertEquals(controller.getItemFromList(listId.toString(), tmp.getId().toString(), httpServletResponse), message);
     }
 
 
